@@ -8,12 +8,16 @@ const userController = new Elysia({
 });
 
 userController.model({
-  uuid: t.String(),
-  username: t.String(),
-  email: t.String(),
-  password: t.String(),
-  name: t.String(),
-  surname: t.String(),
+  User: t.Object({
+    uuid: t.String(),
+    name: t.String(),
+    surname: t.String(),
+    password: t.String(),
+    email: t.String(),
+    year: t.Number(),
+    role: t.Enum({ student: "student", teacher: "teacher" }),
+    salt: t.String(),
+  }),
 });
 
 userController.get(
@@ -27,6 +31,22 @@ userController.get(
     detail: {
       summary: "Get All User", //API Name
       description: "Get all user from database", //API Description
+    },
+  }
+);
+
+userController.get(
+  "/byID",
+  async ({ params: { id } }) => {
+    const userRepository = new UserRepository();
+    const user: User | null = await userRepository.getUserByID(id);
+    return user ?? { error: "User not found", status: 200 };
+  },
+  {
+    params: t.Object({ id: t.String() }),
+    detail: {
+      summary: "Get User By ID",
+      description: "Get user by id from database",
     },
   }
 );

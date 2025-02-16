@@ -6,6 +6,7 @@ model User {
     email    String @unique @db.VarChar(20)
     year     Int
     role     Role   @default(student)
+    salt     String @db.VarChar(10)
 
     enrollment Enrollment[]
     review     Review[]
