@@ -1,0 +1,10 @@
+model Enrollment {
+    user_uuid   String
+    course_id   String
+    enrolled_at DateTime @default(now())
+
+    user   User   @relation(fields: [user_uuid], references: [uuid], onDelete: Cascade)
+    course Course @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+
+    @@id([user_uuid, course_id]) // Composite primary key
+}
