@@ -1,5 +1,5 @@
 model Enrollment {
-    user_uuid   String
+    user_uuid   String   @db.Uuid
     course_id   String
     enrolled_at DateTime @default(now())
 

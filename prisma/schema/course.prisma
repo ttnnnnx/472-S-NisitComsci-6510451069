@@ -4,5 +4,5 @@ model Course {
     course_detail String
 
     enrollment Enrollment[]
-    review Review[]
+    review     Review[]
 }
