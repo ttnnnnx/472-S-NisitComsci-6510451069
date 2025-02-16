@@ -1,7 +1,7 @@
 model Review {
     review_id   Int      @id @default(autoincrement())
     review_text String
-    rating      Int // e.g., rating from 1 to 5
+    rating      Int      @default(0)
     review_date DateTime @default(now())
 
     user_uuid String @db.Uuid
