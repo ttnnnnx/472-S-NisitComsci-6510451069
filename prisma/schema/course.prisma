@@ -1,0 +1,5 @@
+model Course {
+  id     String  @id @db.Char(8)
+  name   String  @db.VarChar(50)
+  detail String  @db.Text
+}
