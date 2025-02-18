@@ -1,5 +1,8 @@
 model Course {
-  id     String  @id @db.Char(8)
-  name   String  @db.VarChar(50)
-  detail String  @db.Text
+    course_id     String @id @db.Char(8)
+    course_name   String @db.VarChar(50)
+    course_detail String
+
+    enrollment Enrollment[]
+    review     Review[]
 }
