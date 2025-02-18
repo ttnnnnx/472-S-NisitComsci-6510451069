@@ -1,13 +1,13 @@
 import { Elysia, t } from "elysia";
 import UserRepository from "../repositories/UserRepository";
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 
-const userController = new Elysia({
+const UserController = new Elysia({
   prefix: "/api/user",
   tags: ["User"],
 });
 
-userController.model({
+UserController.model({
   User: t.Object({
     uuid: t.String(),
     name: t.String(),
@@ -20,8 +20,8 @@ userController.model({
   }),
 });
 
-userController.get(
-  "/all",
+UserController.get(
+  "/getAll",
   async () => {
     const userRepository = new UserRepository();
     const users: User[] = await userRepository.getAllUsers();
@@ -35,8 +35,8 @@ userController.get(
   }
 );
 
-userController.get(
-  "/byID",
+UserController.get(
+  "/get/:id",
   async ({ params: { id } }) => {
     const userRepository = new UserRepository();
     const user: User | null = await userRepository.getUserByID(id);
@@ -51,4 +51,37 @@ userController.get(
   }
 );
 
-export default userController;
+UserController.post(
+  "/create",
+  async ({ body }) => {
+    const userRepository = new UserRepository();
+    try {
+      body.salt === undefined
+        ? (body.salt = Math.random().toString(36).substring(2, 12))
+        : ""; //generate random
+      const newBody = { ...body, salt: body.salt };
+      const password = await Bun.password.hash(
+        newBody.password + newBody.salt,
+        "bcrypt"
+      );//hash password
+      newBody.password = password; //set password
+      const user: User = await userRepository.createUser(newBody);
+      return user;
+    } catch (error: any) {
+      return { error: error.message };
+    }
+  },
+  {
+    body: t.Object({
+      name: t.String(),
+      surname: t.String(),
+      password: t.String(),
+      email: t.String(),
+      year: t.Number(),
+      role: t.Enum(Role),
+      salt: t.Optional(t.String()),
+    }),
+  }
+);
+
+export default UserController;

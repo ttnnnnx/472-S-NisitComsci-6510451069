@@ -1,5 +1,6 @@
 import { Role, User } from "@prisma/client";
 import db from "./database.server";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 class UserRepository {
   public async getUserByID(uuid: string): Promise<User | null> {
@@ -43,9 +44,16 @@ class UserRepository {
       });
       return response;
     } catch (error) {
-      console.error("Error createing user: ", error);
-      throw new Error("Failed to create user");
+      if (error instanceof PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case "P2002":
+            throw new Error("Email already exists");
+          default:
+            throw new Error("Internal Server Error");
+        }
+      }
     }
+    throw new Error("Internal Server Error");
   }
 }
 
