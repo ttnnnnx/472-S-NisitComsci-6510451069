@@ -81,6 +81,10 @@ UserController.post(
       role: t.Enum(Role),
       salt: t.Optional(t.String()),
     }),
+    detail: {
+      summary: "Create User",
+      description: "Create new User in database"
+    }
   }
 );
 
