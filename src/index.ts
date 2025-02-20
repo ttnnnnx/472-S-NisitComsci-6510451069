@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import userController from "./controllers/UserController"
+import courseController from "./controllers/CourseController";
 
 const app = new Elysia();
 
@@ -11,6 +12,7 @@ app.use(
       info: { title: "Nisit Com Sci", version: "1.0.0" },
       tags: [
         { name: "User", description: "User endpoint" },
+        { name: "Course", description: "Course endpoint" },
       ],
     },
   })
@@ -18,6 +20,7 @@ app.use(
 
 
 app.use(userController);
+app.use(courseController);
 
 app.listen(3000);
 
