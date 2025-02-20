@@ -112,15 +112,49 @@ UserController.post(
         maximum: 8,
         error: {
           minimum: "Year should be 1-8",
-          maximum: "Year should be 1-8"
-        }
+          maximum: "Year should be 1-8",
+        },
       }),
-      role: t.Enum(Role),
+      // role: t.Enum(Role),
       salt: t.Optional(t.String()),
     }),
     detail: {
       summary: "Create User",
       description: "Create new User in database",
+    },
+  }
+);
+
+UserController.put(
+  "/update",
+  async ({ body }) => {
+    const userRepository = new UserRepository();
+
+    if (body.password) {
+      const user = await userRepository.getUserByID(body.uuid);
+      if (user) {
+        body.password = await Bun.password.hash(
+          body.password + user.salt,
+          "bcrypt"
+        );
+      }
+    }
+
+    const response = await userRepository.updatedUser(body.uuid, body);
+    return response;
+  },
+  {
+    body: t.Object({
+      uuid: t.String(),
+      name: t.Optional(t.String()),
+      surname: t.Optional(t.String()),
+      password: t.Optional(t.String()),
+      email: t.Optional(t.String()),
+      year: t.Optional(t.Number()),
+    }),
+    detail: {
+      summary: "Update User",
+      description: "Update a User in the database",
     },
   }
 );
