@@ -30,7 +30,7 @@ export default function ChooseCourseToReview() {
                     <li key={course.course_id} className="bg-white p-4 rounded shadow">
                         <h2 className="text-xl font-semibold">{course.course_name}</h2>
                         <p className="mt-2">{course.course_detail}</p>
-                        <Link to={`/review/${course.course_id}`}> //ใส่ไว้ชั่วคราว ลิงค์ไปหน้า review ของแต่ละวิชา
+                        <Link to={`/review/${course.course_id}`}> /*ใส่ไว้ชั่วคราว ลิงค์ไปหน้า review ของแต่ละวิชา*/
                             <button className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
                                 รีวิวคอร์สนี้
                             </button>
