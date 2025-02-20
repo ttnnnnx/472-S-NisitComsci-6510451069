@@ -1,37 +1,43 @@
-import { useEffect, useState } from "react";
-import { Link } from "@remix-run/react";
+import type { MetaFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import type { Course } from "@prisma/client";
+import CourseRepository from "../../src/repositories/CourseRepository";
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: "Choose Course to Review" },
+        { name: "description", content: "เลือกคอร์สที่ต้องการรีวิว" },
+    ];
+};
+
+export const loader: LoaderFunction = async () => {
+    const courseRepository = new CourseRepository();
+    const courses: Course[] = await courseRepository.getAllCourse();
+    return json({ courses });
+};
 
 export default function ChooseCourseToReview() {
-    const [courses, setCourses] = useState<{ id: number; name: string }[]>([]);
-
-    useEffect(() => {
-        fetch("/api/courses") // เรียก API เพื่อนำข้อมูลมาใช้
-            .then((res) => res.json())
-            .then((data) => setCourses(data))
-            .catch((err) => console.error(err));
-    }, []);
+    const { courses } = useLoaderData<{ courses: Course[] }>();
 
     return (
-        <div className="bg-gray-200 h-screen flex flex-col justify-center items-center">
-            <h1 className="text-black font-bold text-2xl mb-4">
-                Choose a Course to Review
+        <div className="bg-slate-300 min-h-screen p-6">
+            <h1 className="text-black font-bold text-2xl mb-6">
+                เลือกคอร์สที่ต้องการรีวิว
             </h1>
-            <div className="bg-white w-96 h-60 overflow-y-scroll border rounded-lg shadow-lg p-4">
-                {courses.length > 0 ? (
-                    courses.map((course) => (
-                        <div key={course.id} className="p-2 border-b">
-                            {course.name}
-                        </div>
-                    ))
-                ) : (
-                    <p className="text-gray-500">No courses available</p>
-                )}
-            </div>
-            <Link to="/">
-                <button className="mt-4 px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md">
-                    Back to Home
-                </button>
-            </Link>
+            <ul className="space-y-4">
+                {courses.map((course) => (
+                    <li key={course.course_id} className="bg-white p-4 rounded shadow">
+                        <h2 className="text-xl font-semibold">{course.course_name}</h2>
+                        <p className="mt-2">{course.course_detail}</p>
+                        <Link to={`/review/${course.course_id}`}> //ใส่ไว้ชั่วคราว ลิงค์ไปหน้า review ของแต่ละวิชา
+                            <button className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
+                                รีวิวคอร์สนี้
+                            </button>
+                        </Link>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
