@@ -20,7 +20,7 @@ class UserRepository {
     email,
     year,
     salt,
-    role,
+    // role,
   }: {
     name: string;
     surname: string;
@@ -28,7 +28,7 @@ class UserRepository {
     email: string;
     year: number;
     salt: string;
-    role: Role;
+    // role: Role;
   }): Promise<User> {
     try {
       const response = await db.user.create({
@@ -39,7 +39,7 @@ class UserRepository {
           email: email,
           year: year,
           salt: salt,
-          role: role,
+          // role: role,
         },
       });
       return response;
@@ -50,6 +50,35 @@ class UserRepository {
             throw new Error("Email already exists");
           default:
             throw new Error("Internal Server Error");
+        }
+      }
+    }
+    throw new Error("Internal Server Error");
+  }
+
+  public async updatedUser(
+    uuid: string,
+    updates: {
+      name?: string;
+      surname?: string;
+      password?: string;
+      email?: string;
+      year?: number;
+    }
+  ): Promise<User> {
+    try {
+      const response = await db.user.update({
+        where: { uuid },
+        data: updates,
+      });
+      return response;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case "P2002":
+            throw new Error("A bank account with this number already exists.");
+          default:
+            throw new Error(error.code);
         }
       }
     }

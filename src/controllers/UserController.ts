@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import UserRepository from "../repositories/UserRepository";
 import { Role, User } from "@prisma/client";
+import { pattern } from "isbot";
 
 const UserController = new Elysia({
   prefix: "/api/user",
@@ -63,7 +64,7 @@ UserController.post(
       const password = await Bun.password.hash(
         newBody.password + newBody.salt,
         "bcrypt"
-      );//hash password
+      ); //hash password
       newBody.password = password; //set password
       const user: User = await userRepository.createUser(newBody);
       return user;
@@ -73,14 +74,88 @@ UserController.post(
   },
   {
     body: t.Object({
-      name: t.String(),
-      surname: t.String(),
-      password: t.String(),
+      name: t.String({
+        pattern: "^[a-zA-Z]*$",
+        minLength: 2,
+        maxLength: 15,
+        error: {
+          pattern: "Name must contain only characters",
+          minLenght: "Name should has at least 2 characters",
+          maxLenght: "Name should has at most 15 characters",
+        },
+      }),
+      surname: t.String({
+        pattern: "^[a-zA-Z]*$",
+        minLength: 2,
+        maxLength: 15,
+        error: {
+          pattern: "Surname must contain only characters",
+          minLenght: "Surname should has at least 2 characters",
+          maxLenght: "Surname should has at most 15 characters",
+        },
+      }),
+      password: t.String({
+        minLength: 8,
+        maxLength: 12,
+        pattern:
+          '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\\d!@#$%^&*(),.?":{}|<>]{8,12}$',
+        error: {
+          minLength: "Password should have at least 8 characters",
+          maxLength: "Password should have at most 12 characters",
+          pattern:
+            "Password should be 8-12 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+        },
+      }),
       email: t.String(),
-      year: t.Number(),
-      role: t.Enum(Role),
+      year: t.Number({
+        minimum: 1,
+        maximum: 8,
+        error: {
+          minimum: "Year should be 1-8",
+          maximum: "Year should be 1-8",
+        },
+      }),
+      // role: t.Enum(Role),
       salt: t.Optional(t.String()),
     }),
+    detail: {
+      summary: "Create User",
+      description: "Create new User in database",
+    },
+  }
+);
+
+UserController.put(
+  "/update",
+  async ({ body }) => {
+    const userRepository = new UserRepository();
+
+    if (body.password) {
+      const user = await userRepository.getUserByID(body.uuid);
+      if (user) {
+        body.password = await Bun.password.hash(
+          body.password + user.salt,
+          "bcrypt"
+        );
+      }
+    }
+
+    const response = await userRepository.updatedUser(body.uuid, body);
+    return response;
+  },
+  {
+    body: t.Object({
+      uuid: t.String(),
+      name: t.Optional(t.String()),
+      surname: t.Optional(t.String()),
+      password: t.Optional(t.String()),
+      email: t.Optional(t.String()),
+      year: t.Optional(t.Number()),
+    }),
+    detail: {
+      summary: "Update User",
+      description: "Update a User in the database",
+    },
   }
 );
 
