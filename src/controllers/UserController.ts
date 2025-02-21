@@ -57,16 +57,7 @@ UserController.post(
   async ({ body }) => {
     const userRepository = new UserRepository();
     try {
-      body.salt === undefined
-        ? (body.salt = Math.random().toString(36).substring(2, 12))
-        : ""; //generate random
-      const newBody = { ...body, salt: body.salt };
-      const password = await Bun.password.hash(
-        newBody.password + newBody.salt,
-        "bcrypt"
-      ); //hash password
-      newBody.password = password; //set password
-      const user: User = await userRepository.createUser(newBody);
+      const user: User = await userRepository.createUser(body);
       return user;
     } catch (error: any) {
       return { error: error.message };
@@ -116,7 +107,7 @@ UserController.post(
         },
       }),
       // role: t.Enum(Role),
-      salt: t.Optional(t.String()),
+      // salt: t.Optional(t.String()),
     }),
     detail: {
       summary: "Create User",
@@ -125,21 +116,32 @@ UserController.post(
   }
 );
 
+UserController.post(
+  "/login",
+  async ({ body }) => {
+    try {
+      const userRepository = new UserRepository();
+      const user = await userRepository.login(body.email, body.password);
+      return { message: "Login Successful", user:user};
+    } catch (error: any) {
+      return { error: error.message };
+    }
+  },
+  {
+    body: t.Object({
+      email: t.String(),
+      password: t.String(),
+    }),
+    detail: {
+      summary: "Login"
+    }
+  }
+);
+
 UserController.put(
   "/update",
   async ({ body }) => {
     const userRepository = new UserRepository();
-
-    if (body.password) {
-      const user = await userRepository.getUserByID(body.uuid);
-      if (user) {
-        body.password = await Bun.password.hash(
-          body.password + user.salt,
-          "bcrypt"
-        );
-      }
-    }
-
     const response = await userRepository.updatedUser(body.uuid, body);
     return response;
   },
@@ -155,6 +157,20 @@ UserController.put(
     detail: {
       summary: "Update User",
       description: "Update a User in the database",
+    },
+  }
+);
+
+UserController.delete(
+  "/delete",
+  async (id: string) => {
+    const userRepository = new UserRepository();
+    return userRepository.deleteUser(id);
+  },
+  {
+    detail: {
+      summary: "Delete User",
+      description: "Delete User by Id",
     },
   }
 );
