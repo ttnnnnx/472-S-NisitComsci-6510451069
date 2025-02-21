@@ -57,15 +57,6 @@ UserController.post(
   async ({ body }) => {
     const userRepository = new UserRepository();
     try {
-    //   body.salt === undefined
-    //     ? (body.salt = Math.random().toString(36).substring(2, 12))
-    //     : ""; //generate random
-    //   const newBody = { ...body, salt: body.salt };
-    //   const password = await Bun.password.hash(
-    //     newBody.password + newBody.salt,
-    //     "bcrypt"
-    //   ); //hash password
-    //   newBody.password = password; //set password
       const user: User = await userRepository.createUser(body);
       return user;
     } catch (error: any) {
@@ -129,17 +120,6 @@ UserController.put(
   "/update",
   async ({ body }) => {
     const userRepository = new UserRepository();
-
-    if (body.password) {
-      const user = await userRepository.getUserByID(body.uuid);
-      if (user) {
-        body.password = await Bun.password.hash(
-          body.password + user.salt,
-          "bcrypt"
-        );
-      }
-    }
-
     const response = await userRepository.updatedUser(body.uuid, body);
     return response;
   },

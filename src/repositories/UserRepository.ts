@@ -30,8 +30,8 @@ class UserRepository {
     // salt: string;
     // role: Role;
   }): Promise<User> {
-    const salt = Math.random().toString(36).substring(2, 12);
-    const hashedPassword = await Bun.password.hash(password + salt, "bcrypt");
+    const salt = Math.random().toString(36).substring(2, 12); //generate random salt
+    const hashedPassword = await Bun.password.hash(password + salt, "bcrypt"); //hash password
     try {
       const response = await db.user.create({
         data: {
@@ -69,6 +69,17 @@ class UserRepository {
     }
   ): Promise<User> {
     try {
+      if (updates.password) {
+        const user = await this.getUserByID(uuid);
+        if (user) {
+          const hashedPassword = await Bun.password.hash(
+            updates.password + user.salt,
+            "bcrypt"
+          );
+          updates.password = hashedPassword;
+        }
+      }
+
       const response = await db.user.update({
         where: { uuid },
         data: updates,
