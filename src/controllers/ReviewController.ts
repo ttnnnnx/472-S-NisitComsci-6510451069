@@ -82,7 +82,7 @@ reviewController.post(
 // ✅ DELETE Review (ลบรีวิวได้เฉพาะเจ้าของรีวิว)
 reviewController.delete(
   "/delete/:id",
-  async ({ params}) => {
+  async ({ params }) => {
     const reviewRepository = new ReviewRepository();
     return await reviewRepository.deleteReview(Number(params.id));
   },
