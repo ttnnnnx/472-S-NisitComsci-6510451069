@@ -57,16 +57,16 @@ UserController.post(
   async ({ body }) => {
     const userRepository = new UserRepository();
     try {
-      body.salt === undefined
-        ? (body.salt = Math.random().toString(36).substring(2, 12))
-        : ""; //generate random
-      const newBody = { ...body, salt: body.salt };
-      const password = await Bun.password.hash(
-        newBody.password + newBody.salt,
-        "bcrypt"
-      ); //hash password
-      newBody.password = password; //set password
-      const user: User = await userRepository.createUser(newBody);
+    //   body.salt === undefined
+    //     ? (body.salt = Math.random().toString(36).substring(2, 12))
+    //     : ""; //generate random
+    //   const newBody = { ...body, salt: body.salt };
+    //   const password = await Bun.password.hash(
+    //     newBody.password + newBody.salt,
+    //     "bcrypt"
+    //   ); //hash password
+    //   newBody.password = password; //set password
+      const user: User = await userRepository.createUser(body);
       return user;
     } catch (error: any) {
       return { error: error.message };
@@ -116,7 +116,7 @@ UserController.post(
         },
       }),
       // role: t.Enum(Role),
-      salt: t.Optional(t.String()),
+      // salt: t.Optional(t.String()),
     }),
     detail: {
       summary: "Create User",

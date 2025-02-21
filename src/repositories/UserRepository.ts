@@ -19,23 +19,25 @@ class UserRepository {
     password,
     email,
     year,
-    salt,
-  }: // role,
+  }: // salt,
+  // role,
   {
     name: string;
     surname: string;
     password: string;
     email: string;
     year: number;
-    salt: string;
+    // salt: string;
     // role: Role;
   }): Promise<User> {
+    const salt = Math.random().toString(36).substring(2, 12);
+    const hashedPassword = await Bun.password.hash(password + salt, "bcrypt");
     try {
       const response = await db.user.create({
         data: {
           name: name,
           surname: surname,
-          password: password,
+          password: hashedPassword,
           email: email,
           year: year,
           salt: salt,
