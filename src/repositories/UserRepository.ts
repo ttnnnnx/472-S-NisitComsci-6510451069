@@ -20,8 +20,8 @@ class UserRepository {
     email,
     year,
     salt,
-    // role,
-  }: {
+  }: // role,
+  {
     name: string;
     surname: string;
     password: string;
@@ -77,6 +77,25 @@ class UserRepository {
         switch (error.code) {
           case "P2002":
             throw new Error("A bank account with this number already exists.");
+          default:
+            throw new Error(error.code);
+        }
+      }
+    }
+    throw new Error("Internal Server Error");
+  }
+
+  public async deleteUser(id: string): Promise<User | null> {
+    try {
+      const response = await db.user.delete({
+        where: { uuid: id },
+      });
+      return response;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case "P2025":
+            throw new Error("Record does not exists.");
           default:
             throw new Error(error.code);
         }

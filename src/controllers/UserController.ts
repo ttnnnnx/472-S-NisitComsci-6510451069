@@ -159,4 +159,18 @@ UserController.put(
   }
 );
 
+UserController.delete(
+  "/delete",
+  async (id: string) => {
+    const userRepository = new UserRepository();
+    return userRepository.deleteUser(id);
+  },
+  {
+    detail: {
+      summary: "Delete User",
+      description: "Delete User by Id",
+    },
+  }
+);
+
 export default UserController;
