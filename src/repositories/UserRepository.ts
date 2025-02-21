@@ -13,6 +13,57 @@ class UserRepository {
     return await db.user.findMany();
   }
 
+  public async getUserByEmail(email: string): Promise<User | null> {
+    try {
+      return await db.user.findUnique({
+        where: { email },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new Error(error.code);
+      }
+    }
+    throw new Error("Internal Server Error");
+  }
+
+  public async login(email: string, password: string): Promise<Partial<User>> {
+    try {
+      const loggingInUser = await this.getUserByEmail(email);
+
+      if (!loggingInUser) {
+        throw new Error("Invalid email or password");
+      }
+
+      //check if password correct
+      const isValidPassword = await Bun.password.verify(
+        password + loggingInUser.salt,
+        loggingInUser.password
+      );
+
+      //Debugging log
+      console.log("user's salt: ", loggingInUser.salt);
+      console.log("user's password:     ", loggingInUser.password);
+      console.log("isValidPassword: ", isValidPassword);
+
+      if (!isValidPassword) {
+        console.log("Invalid email or password");
+        throw new Error("Invalid email or password");
+      }
+
+      const user = (await db.$queryRaw<
+        { name: string; surname: string; email: string; year: number; role: Role }
+      >`SELECT "name", "surname", "email", "year", "role" FROM "User" WHERE "email" = ${email} LIMIT 1`) as Partial<User>;
+
+      console.log(user);
+      return user;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        throw new Error(error.code);
+      }
+    }
+    throw new Error("Internal Server Error");
+  }
+
   public async createUser({
     name,
     surname,

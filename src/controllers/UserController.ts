@@ -116,6 +116,28 @@ UserController.post(
   }
 );
 
+UserController.post(
+  "/login",
+  async ({ body }) => {
+    try {
+      const userRepository = new UserRepository();
+      const user = userRepository.login(body.email, body.password);
+      return { message: "Login Successful", user:user};
+    } catch (error: any) {
+      return { error: error.message };
+    }
+  },
+  {
+    body: t.Object({
+      email: t.String(),
+      password: t.String(),
+    }),
+    detail: {
+      summary: "Login"
+    }
+  }
+);
+
 UserController.put(
   "/update",
   async ({ body }) => {
