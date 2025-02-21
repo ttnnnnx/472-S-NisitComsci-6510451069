@@ -26,7 +26,7 @@ class UserRepository {
     throw new Error("Internal Server Error");
   }
 
-  public async login(email: string, password: string): Promise<Partial<User>> {
+  public async login(email: string, password: string): Promise<Partial<User|null>> {
     try {
       const loggingInUser = await this.getUserByEmail(email);
 
@@ -41,8 +41,6 @@ class UserRepository {
       );
 
       //Debugging log
-      console.log("user's salt: ", loggingInUser.salt);
-      console.log("user's password:     ", loggingInUser.password);
       console.log("isValidPassword: ", isValidPassword);
 
       if (!isValidPassword) {
@@ -50,9 +48,16 @@ class UserRepository {
         throw new Error("Invalid email or password");
       }
 
-      const user = (await db.$queryRaw<
-        { name: string; surname: string; email: string; year: number; role: Role }
-      >`SELECT "name", "surname", "email", "year", "role" FROM "User" WHERE "email" = ${email} LIMIT 1`) as Partial<User>;
+      const user = await db.user.findUnique({
+        where: {email: email},
+        select: {
+          name: true,
+          surname: true,
+          email: true,
+          year: true,
+          role: true
+        }
+      })
 
       console.log(user);
       return user;

@@ -121,7 +121,7 @@ UserController.post(
   async ({ body }) => {
     try {
       const userRepository = new UserRepository();
-      const user = userRepository.login(body.email, body.password);
+      const user = await userRepository.login(body.email, body.password);
       return { message: "Login Successful", user:user};
     } catch (error: any) {
       return { error: error.message };
