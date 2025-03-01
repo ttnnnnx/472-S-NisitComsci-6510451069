@@ -1,43 +1,83 @@
-// app/routes/my-course-list.tsx
 import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Form } from "@remix-run/react";
 import type { Course } from "@prisma/client";
 
-// ฟังก์ชันสมมติสำหรับดึง user จาก session
+// Import repository โดยใช้ path ให้ถูกต้อง
+import CourseRepository from "../../src/repositories/CourseRepository";
+import EnrollmentRepository from "../../src/repositories/EnrollmentRepository";
+//getUserSession(ไม่รู้ทำไง)
 import { getUserSession } from "~/utils/session.server";
-// ฟังก์ชันสมมติสำหรับคุยกับ DB
-import {
-    getAllCourses,
-    getUserCourseList,      // ดึง list ของผู้ใช้
-    updateUserCourseList,   // อัปเดต list
-} from "~/models/nisitCourseList.server";
 
 type LoaderData = {
     allCourses: Course[];
-    selectedCourseIds: string[]; // ID ของคอร์สที่ผู้ใช้ติ๊กไว้
+    enrolledCourseIds: string[];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-    // ตรวจสอบ user จาก session
-    const userSession = await getUserSession(request);
-    if (!userSession) {
-        // ถ้าไม่เจอ user ให้ redirect ไปหน้า login
-        return redirect("/login");
-    }
+    // ตรวจสอบ session ของผู้ใช้
+    const session = await getUserSession(request);
+    if (!session) return redirect("/login");
 
-    // ดึงคอร์สทั้งหมด
-    const allCourses = await getAllCourses();
+    const courseRepo = new CourseRepository();
+    const enrollmentRepo = new EnrollmentRepository();
 
-    // สมมติเราดึง "รายการ" ของผู้ใช้มา 1 รายการ (เช่น ชื่อ My Selected Courses)
-    // และคืนค่าเป็น array ของคอร์ส
-    const selectedCourses = await getUserCourseList(userSession.userId);
+    // ดึงข้อมูลคอร์สทั้งหมดจากฐานข้อมูล
+    const allCourses = await courseRepo.getAllCourse();
+    // ใช้ userId จาก sessionดึง Enrollment ปัจจุบัน
+    const enrollments = await enrollmentRepo.getEnrollmentsByUser(session.userId);
+    const enrolledCourseIds = enrollments.map((e) => e.course_id);
 
-    // แปลงให้เหลือแค่ ID
-    const selectedCourseIds = selectedCourses.map((course) => course.course_id);
-
-    return json<LoaderData>({
-        allCourses,
-        selectedCourseIds,
-    });
+    return json<LoaderData>({ allCourses, enrolledCourseIds });
 };
+
+export const action: ActionFunction = async ({ request }) => {
+    const session = await getUserSession(request);
+    if (!session) return redirect("/login");
+
+    const formData = await request.formData();
+    // รับค่าจาก checkbox ที่มี name="courseIds"
+    const courseIds = formData.getAll("courseIds") as string[];
+
+    const enrollmentRepo = new EnrollmentRepository();
+    await enrollmentRepo.updateEnrollments(session.userId, courseIds);
+
+    return redirect("/my-course-list");
+};
+
+export default function MyCourseList() {
+    const { allCourses, enrolledCourseIds } = useLoaderData<LoaderData>();
+
+    return (
+        <div className="p-4">
+            <h1 className="text-2xl font-bold">My Course List</h1>
+            <Form method="post" className="mt-4 space-y-4">
+                <ul className="space-y-2">
+                    {allCourses.map((course) => {
+                        const isChecked = enrolledCourseIds.includes(course.course_id);
+                        return (
+                            <li key={course.course_id} className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    name="courseIds"
+                                    value={course.course_id}
+                                    defaultChecked={isChecked}
+                                    id={`course_${course.course_id}`}
+                                />
+                                <label htmlFor={`course_${course.course_id}`}>
+                                    {course.course_name}
+                                </label>
+                            </li>
+                        );
+                    })}
+                </ul>
+                <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    บันทึก
+                </button>
+            </Form>
+        </div>
+    );
+}
