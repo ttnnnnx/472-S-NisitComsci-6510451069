@@ -1,5 +1,5 @@
 import { Role, User } from "@prisma/client";
-import db from "./database.server";
+import db from "../../app/utils/database.server";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 class UserRepository {

@@ -1,5 +1,5 @@
 import { Course } from "@prisma/client";
-import db from "./database.server";
+import db from "../../app/utils/database.server"
 
 class CourseRepository {
   // ดึงข้อมูล Course ตาม ID
