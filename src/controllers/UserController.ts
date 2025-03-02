@@ -163,11 +163,14 @@ UserController.put(
 
 UserController.delete(
   "/delete",
-  async (id: string) => {
+  async ({ body }) => {
     const userRepository = new UserRepository();
-    return userRepository.deleteUser(id);
+    return userRepository.deleteUser(body.uuid);
   },
   {
+    body: t.Object({
+      uuid: t.String(),
+    }),
     detail: {
       summary: "Delete User",
       description: "Delete User by Id",
