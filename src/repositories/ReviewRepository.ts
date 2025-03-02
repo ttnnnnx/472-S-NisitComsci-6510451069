@@ -1,6 +1,6 @@
 // src/repositories/ReviewRepository.ts
 import { Review } from "@prisma/client";
-import db from "./database.server";
+import db from "../../app/utils/database.server";
 
 class ReviewRepository {
   // ✅ ดึงข้อมูล Review ตาม ID
