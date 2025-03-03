@@ -1,4 +1,9 @@
-import { redirect, useFetcher, type ActionFunctionArgs } from "react-router";
+import {
+  Link,
+  redirect,
+  useFetcher,
+  type ActionFunctionArgs,
+} from "react-router";
 import { authCookie } from "~/utils/session.server";
 import UserRepository from "./repositories/UserRepository.server";
 
@@ -55,36 +60,44 @@ export default function Login() {
   const fetcher = useFetcher<ActionMessage>();
   return (
     <div className="bg-[#1E364C] h-screen flex flex-col justify-center items-center">
-        <fetcher.Form
-          method="post"
-          className="flex flex-col justify-center items-center w-fit h-fit space-y-4 bg-blue-50 p-10 rounded"
+      <fetcher.Form
+        method="post"
+        className="flex flex-col justify-center items-center w-fit h-fit space-y-4 bg-blue-50 p-10 rounded"
+      >
+        <h1 className="text-[#1E364C] font-extrabold text-3xl">Nisit-Comsci</h1>
+        <input
+          type="text"
+          name="email"
+          placeholder="Email"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+        />
+        {fetcher.data?.error && (
+          <div className="text-red-500">{fetcher.data.error}</div>
+        )}
+        <button
+          name="_action"
+          value="login"
+          className="bg-[#7793AE] text-white p-2 rounded w-40"
         >
-          <h1 className="text-[#1E364C] font-extrabold text-3xl">
-            Nisit-Comsci
-          </h1>
-          <input
-            type="text"
-            name="email"
-            placeholder="Email"
-            className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
-          />
-          {fetcher.data?.error && (
-            <div className="text-red-500">{fetcher.data.error}</div>
-          )}
-          <button
-            name="_action"
-            value="login"
-            className="bg-[#7793AE] text-white p-2 rounded w-40"
+          Login
+        </button>
+        <div className="flex flex-row gap-4">
+          <h1 className="text-[#1E364C]">Don't have an account?</h1>
+          <Link
+            to="/register"
+            prefetch="render"
+            className="text-[#1E364C] underline font-bold hover:font-extrabold"
           >
-            Login
-          </button>
-        </fetcher.Form>
+            Register
+          </Link>
+        </div>
+      </fetcher.Form>
     </div>
   );
 }
