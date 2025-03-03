@@ -1,4 +1,4 @@
-import { useFetcher, useLoaderData } from "react-router";
+import { Link, useFetcher, useLoaderData } from "react-router";
 
 interface ErrorMessage {
     message: string;
@@ -93,11 +93,21 @@ export default function Register() {
                     )
                 }
                 <button
-                    className="bg-[#7793AE] text-white p-2 rounded w-40"
+                    className="bg-[#7793AE] text-white p-2 rounded w-40 hover:bg-[#43586c]"
                     type="submit"
                 >
                     create account
                 </button>
+                <div className="flex flex-row gap-2">
+                    <h1 className="text-[#1E364C] text-[12px]">Already have an account?</h1>
+                    <Link
+                        to="/login"
+                        prefetch="render"
+                        className="text-[#1E364C] underline font-bold hover:font-extrabold text-[12px]"
+                    >
+                        LogIn
+                    </Link>
+                </div>
             </fetcher.Form>
         </div>
     );

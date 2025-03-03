@@ -83,16 +83,16 @@ export default function Login() {
         <button
           name="_action"
           value="login"
-          className="bg-[#7793AE] text-white p-2 rounded w-40"
+          className="bg-[#7793AE] text-white p-2 rounded w-40 hover:bg-[#43586c]"
         >
           Login
         </button>
-        <div className="flex flex-row gap-4">
-          <h1 className="text-[#1E364C]">Don't have an account?</h1>
+        <div className="flex flex-row gap-2">
+          <h1 className="text-[#1E364C] text-[12px]">Don't have an account?</h1>
           <Link
             to="/register"
             prefetch="render"
-            className="text-[#1E364C] underline font-bold hover:font-extrabold"
+            className="text-[#1E364C] underline font-bold hover:font-extrabold text-[12px]"
           >
             Register
           </Link>
