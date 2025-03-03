@@ -18,26 +18,26 @@ export async function action({ request }: ActionFunctionArgs) {
       if (!email || !password) {
         return {
           message: "",
-          error: "Invalid username or password",
+          error: "Invalid email or password",
           data: null,
         };
       }
       const userRepo = new UserRepository();
-      const user = await userRepo.login(email, password);
-      if (user.error) {
+      const response = await userRepo.login(email, password);
+      if (response.error) {
         return {
           message: "",
-          error: "Invalid username or password",
+          error: "Invalid email or password",
           data: null,
         };
       }
       const authCookieUser: AuthCookie = {
-        uuid: user.user.uuid,
-        name: user.user.name,
-        surname: user.user.surname,
-        email: user.user.email,
-        year: user.user.year,
-        role: user.user.role,
+        uuid: response.user.uuid,
+        name: response.user.name,
+        surname: response.user.surname,
+        email: response.user.email,
+        year: response.user.year,
+        role: response.user.role,
       };
       return redirect("/", {
         headers: {
