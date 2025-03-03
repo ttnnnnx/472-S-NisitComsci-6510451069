@@ -22,7 +22,9 @@ export default class UserRepository {
   }
 
   public async getUserByEmail(email: string): Promise<User> {
+    //localhost3000
     const BACKEND_URL = process.env.BACKEND_URL as string;
+    //api ของ function นั้นๆ
     const response = await fetch(`${BACKEND_URL}/api/user/getByEmail/${email}`);
     const data: User = await response.json();
     return data;

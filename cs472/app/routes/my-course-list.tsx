@@ -14,17 +14,12 @@ import EnrollmentRepository from "./repositories/EnrollmentRepository.server";
 import { authCookie } from "~/utils/session.server";
 import LogoutButton from "./components/LogoutButton";
 
-type LoaderData = {
-  allCourses: Course[];
-  enrolledCourseIds: string[];
-  user: AuthCookie;
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
   // ตรวจสอบ session ของผู้ใช้
   const session = request.headers.get("Cookie");
   const user: AuthCookie = await authCookie.parse(session);
   if (!user) return redirect("/login");
+
   const courseRepo = new CourseRepository();
   const enrollmentRepo = new EnrollmentRepository();
   // ดึงข้อมูลคอร์สทั้งหมดจากฐานข้อมูล
@@ -63,6 +58,12 @@ interface ActionMessage {
   error: string;
   data: any;
 }
+
+type LoaderData = {
+  allCourses: Course[];
+  enrolledCourseIds: string[];
+  user: AuthCookie;
+};
 
 export default function MyCourseList() {
   const { user, allCourses, enrolledCourseIds } = useLoaderData<LoaderData>();
