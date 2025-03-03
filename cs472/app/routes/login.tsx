@@ -54,32 +54,37 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Login() {
   const fetcher = useFetcher<ActionMessage>();
   return (
-    <fetcher.Form
-      method="post"
-      className="flex flex-col justify-center items-center w-svw h-svh mt-4 space-y-4"
-    >
-      <input
-        type="text"
-        name="email"
-        placeholder="Email"
-        className="border border-gray-300 p-2"
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        className="border border-gray-300 p-2"
-      />
-      {fetcher.data?.error && (
-        <div className="text-red-500">{fetcher.data.error}</div>
-      )}
-      <button
-        name="_action"
-        value="login"
-        className="bg-blue-500 text-white p-2 rounded"
-      >
-        Login
-      </button>
-    </fetcher.Form>
+    <div className="bg-[#1E364C] h-screen flex flex-col justify-center items-center">
+        <fetcher.Form
+          method="post"
+          className="flex flex-col justify-center items-center w-fit h-fit space-y-4 bg-blue-50 p-10 rounded"
+        >
+          <h1 className="text-[#1E364C] font-extrabold text-3xl">
+            Nisit-Comsci
+          </h1>
+          <input
+            type="text"
+            name="email"
+            placeholder="Email"
+            className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          />
+          {fetcher.data?.error && (
+            <div className="text-red-500">{fetcher.data.error}</div>
+          )}
+          <button
+            name="_action"
+            value="login"
+            className="bg-[#7793AE] text-white p-2 rounded w-40"
+          >
+            Login
+          </button>
+        </fetcher.Form>
+    </div>
   );
 }
