@@ -25,6 +25,8 @@ export default class UserRepository {
     //api ของ function นั้นๆ
     const response = await fetch(`${BACKEND_URL}/api/user/getByEmail/${email}`);
     const data: User = await response.json();
+    
+    console.log("Backend Response getUserByEmail: ", email, data);
     return data;
   }
 
@@ -44,6 +46,8 @@ export default class UserRepository {
       body: JSON.stringify({ name, surname, password, email, year }),
     });
     const data: User = await response.json();
+    
+    console.log("Backend Response createUser: ", data);
     return data;
   }
 }

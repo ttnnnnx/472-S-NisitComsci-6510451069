@@ -15,7 +15,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
 
-  const errors: Record<string, string> = {};
+  let errors: Record<string, any> = {};
 
   if (!firstName || firstName.length < 2 || firstName.length > 15)
     errors.firstName = "First name should contain 2-15 characters";
@@ -26,9 +26,33 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!year || year < 1 || year > 8)
     errors.year = "Year must be between 1 and 8";
 
-  if (!email) errors.email = "Please input email";
+  if (!email) {
+    errors.email = "Please input email";
+  } else {
+    const userRepo = new UserRepository();
+    const existEmail = await userRepo.getUserByEmail(email);
+    if (existEmail) {
+      errors.email = "Email already used";
+    }
+    if (
+      existEmail.error == "User not found" &&
+      errors.email == "Email already used"
+    ) {
+      delete errors.email;
+    }
+  }
 
-  if (!password) errors.password = "Please input your password";
+  if (!password) {
+    errors.password = "Please input your password";
+  } else {
+    let validPassword:boolean = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,12}$/.test(password);
+    if (!validPassword) {
+      errors.password = "Password should contain 8-12 characters with Upper case, Lower case, numeric and special characters"
+    }
+    if (validPassword && errors.password) {
+      delete errors.password;
+    }
+  }
 
   if (!confirmPassword) {
     errors.confirmPassword = "Please confirm your password";
@@ -37,27 +61,24 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   if (Object.keys(errors).length > 0) {
+    //log check errror
     console.log("Errors: ", errors);
     return { errors }; // Return all errors if any exist
-  }
+  } else {
+    const userRepo = new UserRepository();
+    const response = await userRepo.createUser(
+      firstName,
+      lastName,
+      password,
+      email,
+      year
+    );
 
-  const userRepo = new UserRepository();
-  const existUser = await userRepo.getUserByEmail(email);
+    console.log("Response: ", response);
 
-  if (existUser) {
-    return { email: "Email already used" };
-  }
-
-  const response = await userRepo.createUser(
-    firstName,
-    lastName,
-    password,
-    email,
-    year
-  );
-
-  if (response) {
-    return redirect("/login");
+    if (response) {
+      return redirect("/login");
+    }
   }
 
   return null;
@@ -85,6 +106,7 @@ export default function Register() {
         {errors.firstName && (
           <h1 className="text-red-500">{errors.firstName}</h1>
         )}
+
         <input
           name="lastName"
           type="text"
@@ -92,6 +114,7 @@ export default function Register() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.lastName && <h1 className="text-red-500">{errors.lastName}</h1>}
+
         <input
           name="year"
           type="number"
@@ -99,6 +122,7 @@ export default function Register() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.year && <h1 className="text-red-500">{errors.year}</h1>}
+
         <input
           name="email"
           type="email"
@@ -106,6 +130,7 @@ export default function Register() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.email && <h1 className="text-red-500">{errors.email}</h1>}
+
         <input
           name="password"
           type="password"
@@ -113,6 +138,7 @@ export default function Register() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.password && <h1 className="text-red-500">{errors.password}</h1>}
+
         <input
           name="confirmPassword"
           type="password"
@@ -122,12 +148,14 @@ export default function Register() {
         {errors.confirmPassword && (
           <h1 className="text-red-500">{errors.confirmPassword}</h1>
         )}
+
         <button
           className="bg-[#7793AE] text-white p-2 rounded w-40 hover:bg-[#43586c]"
           type="submit"
         >
           create account
         </button>
+
         <div className="flex flex-row gap-2">
           <h1 className="text-[#1E364C] text-[12px]">
             Already have an account?
