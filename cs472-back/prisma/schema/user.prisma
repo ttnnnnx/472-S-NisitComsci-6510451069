@@ -10,6 +10,8 @@ model User {
 
     enrollment Enrollment[]
     review     Review[]
+
+    teach Teach[]
 }
 
 enum Role {

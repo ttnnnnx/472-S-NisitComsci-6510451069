@@ -142,8 +142,6 @@ class UserRepository {
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         switch (error.code) {
-          case "P2002":
-            throw new Error("A bank account with this number already exists.");
           default:
             throw new Error(error.code);
         }

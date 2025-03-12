@@ -5,4 +5,8 @@ model Course {
 
     enrollment Enrollment[]
     review     Review[]
+
+    teach Teach[]
+
+    exam Exam[]
 }

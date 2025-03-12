@@ -1,0 +1,8 @@
+model Exam {
+    exam_id   Int      @id @default(autoincrement())
+    course_id String
+    date      DateTime
+    room      String
+
+    course Course @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+}
