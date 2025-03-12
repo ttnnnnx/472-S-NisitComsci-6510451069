@@ -26,7 +26,7 @@ export default class UserRepository {
     const response = await fetch(`${BACKEND_URL}/api/user/getByEmail/${email}`);
     const data: User = await response.json();
     
-    console.log("Backend Response getUserByEmail: ", email, data);
+    // console.log("Backend Response getUserByEmail: ", email, data);
     return data;
   }
 
@@ -47,7 +47,7 @@ export default class UserRepository {
     });
     const data: User = await response.json();
     
-    console.log("Backend Response createUser: ", data);
+    // console.log("Backend Response createUser: ", data);
     return data;
   }
 }
