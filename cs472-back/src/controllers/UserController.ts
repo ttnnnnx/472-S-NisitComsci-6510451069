@@ -112,7 +112,12 @@ UserController.post(
             "Password should be 8-12 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
         },
       }),
-      email: t.String(),
+      email: t.String({
+        maxLength: 20,
+        error: {
+          maxLength: "Email should not longer than 20 characters"
+        }
+      }),
       year: t.Number({
         minimum: 1,
         maximum: 8,

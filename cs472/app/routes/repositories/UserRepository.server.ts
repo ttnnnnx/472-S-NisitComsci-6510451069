@@ -5,10 +5,7 @@ interface LoginRespones {
 }
 
 export default class UserRepository {
-  public async login(
-    email: string,
-    password: string
-  ): Promise<LoginRespones> {
+  public async login(email: string, password: string): Promise<LoginRespones> {
     const BACKEND_URL = process.env.BACKEND_URL as string;
     const response = await fetch(`${BACKEND_URL}/api/user/login`, {
       method: "POST",
@@ -26,6 +23,25 @@ export default class UserRepository {
     const BACKEND_URL = process.env.BACKEND_URL as string;
     //api ของ function นั้นๆ
     const response = await fetch(`${BACKEND_URL}/api/user/getByEmail/${email}`);
+    const data: User = await response.json();
+    return data;
+  }
+
+  public async createUser(
+    name: string,
+    surname: string,
+    password: string,
+    email: string,
+    year: number
+  ): Promise<User> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const response = await fetch(`${BACKEND_URL}/api/user/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, surname, password, email, year }),
+    });
     const data: User = await response.json();
     return data;
   }
