@@ -5,6 +5,7 @@ interface LoginRespones {
 }
 
 export default class UserRepository {
+  
   public async login(email: string, password: string): Promise<LoginRespones> {
     const BACKEND_URL = process.env.BACKEND_URL as string;
     const response = await fetch(`${BACKEND_URL}/api/user/login`, {

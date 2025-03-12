@@ -80,7 +80,7 @@ export default function Register() {
           name="firstName"
           type="text"
           placeholder="First Name"
-          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.firstName && (
           <h1 className="text-red-500">{errors.firstName}</h1>
@@ -89,35 +89,35 @@ export default function Register() {
           name="lastName"
           type="text"
           placeholder="Last Name"
-          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.lastName && <h1 className="text-red-500">{errors.lastName}</h1>}
         <input
           name="year"
           type="number"
           placeholder="year"
-          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.year && <h1 className="text-red-500">{errors.year}</h1>}
         <input
           name="email"
           type="email"
           placeholder="Email"
-          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.email && <h1 className="text-red-500">{errors.email}</h1>}
         <input
           name="password"
           type="password"
           placeholder="password"
-          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.password && <h1 className="text-red-500">{errors.password}</h1>}
         <input
           name="confirmPassword"
           type="password"
           placeholder="Confirm Password"
-          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
+          className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.confirmPassword && (
           <h1 className="text-red-500">{errors.confirmPassword}</h1>
