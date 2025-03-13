@@ -168,6 +168,13 @@ class UserRepository {
     }
     throw new Error("Internal Server Error");
   }
+
+  public async updateUserPassword(userId: string, hashedPassword: string): Promise<User> {
+    return await db.user.update({
+      where: { uuid: userId },
+      data: { password: hashedPassword },
+    });
+  }
 }
 
 export default UserRepository;

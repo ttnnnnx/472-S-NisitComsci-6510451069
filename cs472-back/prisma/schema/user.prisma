@@ -12,6 +12,8 @@ model User {
     review     Review[]
 
     teach Teach[]
+
+    PasswordResetToken PasswordResetToken[]
 }
 
 enum Role {
