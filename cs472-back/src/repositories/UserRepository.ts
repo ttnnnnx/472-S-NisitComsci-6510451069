@@ -2,7 +2,7 @@ import { Role, User } from "@prisma/client";
 import db from "../database";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-class UserRepository {
+export class UserRepository {
   public async getUserByID(uuid: string): Promise<User | null> {
     return await db.user.findUnique({
       where: { uuid },
@@ -167,6 +167,13 @@ class UserRepository {
       }
     }
     throw new Error("Internal Server Error");
+  }
+
+  public async updateUserPassword(userId: string, hashedPassword: string): Promise<User> {
+    return await db.user.update({
+      where: { uuid: userId },
+      data: { password: hashedPassword },
+    });
   }
 }
 
