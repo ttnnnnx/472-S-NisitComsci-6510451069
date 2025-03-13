@@ -3,11 +3,11 @@ import db from "../database";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { randomBytes } from "crypto";
 
-export class PasswordResetRepository {
+class ResetPasswordRepository {
   public async generateResetToken(userId: string) {
     const token = randomBytes(32).toString("hex");
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 1);
+    const expiresAt = new Date(); //current date
+    expiresAt.setHours(expiresAt.getHours() + 1); //+1 hour to current date
 
     return await db.passwordResetToken.upsert({
       where: { user_uuid: userId }, // Find the reset token by userId
@@ -20,6 +20,10 @@ export class PasswordResetRepository {
     return await db.passwordResetToken.findUnique({
       where: { token },
     });
+  }
+
+  public async getAllTokens(){
+    return await db.passwordResetToken.findMany();
   }
 
   public async deleteResetToken(
@@ -43,3 +47,5 @@ export class PasswordResetRepository {
     throw new Error("Internal Server Error");
   }
 }
+
+export default ResetPasswordRepository;

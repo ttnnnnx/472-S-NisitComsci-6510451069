@@ -2,7 +2,7 @@ import { Role, User } from "@prisma/client";
 import db from "../database";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
-export class UserRepository {
+class UserRepository {
   public async getUserByID(uuid: string): Promise<User | null> {
     return await db.user.findUnique({
       where: { uuid },

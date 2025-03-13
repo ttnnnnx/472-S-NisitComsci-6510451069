@@ -4,6 +4,7 @@ import userController from "./controllers/UserController";
 import courseController from "./controllers/CourseController";
 import reviewController from "./controllers/ReviewController";
 import enrollmentController from "./controllers/EnrollmentController";
+import examController from "./controllers/ExamController";
 
 const app = new Elysia();
 
@@ -26,6 +27,7 @@ app.use(userController);
 app.use(courseController);
 app.use(reviewController);
 app.use(enrollmentController);
+app.use(examController);
 
 app.listen(3000);
 
