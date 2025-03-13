@@ -1,9 +1,16 @@
 import { ArrowLeft } from "lucide-react";
-import { Link, useFetcher } from "react-router";
+import { Link, useFetcher, type ActionFunctionArgs } from "react-router";
 
 interface ErrorMessage{
     message: string;
     status: number;
+}
+
+export async function action({request}: ActionFunctionArgs) {
+    const formData = await request.formData();
+    const email = formData.get("email") as string;
+
+    
 }
 
 export default function ForgotPassword(){
