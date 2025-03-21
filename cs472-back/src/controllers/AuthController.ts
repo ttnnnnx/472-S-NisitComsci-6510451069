@@ -1,13 +1,13 @@
 import Elysia, { t } from "elysia";
-import ResetPasswordRepository from "../repositories/ResetPasswordRepository";
+import AuthRepository from "../repositories/AuthRepository";
 import { PasswordResetToken } from "@prisma/client";
 
-const ResetPasswordController = new Elysia({
+const AuthController = new Elysia({
   prefix: "/api/reset-password",
   tags: ["Reset Password"],
 });
 
-ResetPasswordController.model({
+AuthController.model({
   PasswordResetToken: t.Object({
     id: t.Number(),
     user_uuid: t.String(),
@@ -16,12 +16,12 @@ ResetPasswordController.model({
   }),
 });
 
-ResetPasswordController.get(
+AuthController.get(
   "/getAll",
   async () => {
-    const resetPasswordRepo = new ResetPasswordRepository();
+    const authRepo = new AuthRepository();
     const resetPasswordToken: PasswordResetToken[] =
-      await resetPasswordRepo.getAllTokens();
+      await authRepo.getAllTokens();
     return resetPasswordToken;
   },
   {
@@ -32,12 +32,12 @@ ResetPasswordController.get(
   }
 );
 
-ResetPasswordController.get(
+AuthController.get(
   "/getToken/:token",
   async ({ params: { token } }) => {
-    const resetPasswordRepo = new ResetPasswordRepository();
+    const authRepo = new AuthRepository();
     const resetPasswordToken: PasswordResetToken | null =
-      await resetPasswordRepo.getResetToken(token);
+      await authRepo.getResetToken(token);
     return resetPasswordToken ?? { error: "Token not found", status: 200 };
   },
   {
@@ -49,4 +49,4 @@ ResetPasswordController.get(
   }
 );
 
-export default ResetPasswordController;
+export default AuthController;

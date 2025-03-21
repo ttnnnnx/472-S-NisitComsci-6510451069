@@ -3,7 +3,7 @@ import db from "../database";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { randomBytes } from "crypto";
 
-class ResetPasswordRepository {
+class AuthRepository {
   public async generateResetToken(userId: string) {
     const token = randomBytes(32).toString("hex");
     const expiresAt = new Date(); //current date
@@ -48,4 +48,4 @@ class ResetPasswordRepository {
   }
 }
 
-export default ResetPasswordRepository;
+export default AuthRepository;
