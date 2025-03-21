@@ -26,7 +26,10 @@ class UserRepository {
     throw new Error("Internal Server Error");
   }
 
-  public async login(email: string, password: string): Promise<Partial<User|null>> {
+  public async login(
+    email: string,
+    password: string
+  ): Promise<Partial<User | null>> {
     try {
       const loggingInUser = await this.getUserByEmail(email);
 
@@ -49,16 +52,16 @@ class UserRepository {
       }
 
       const user = await db.user.findUnique({
-        where: {email: email},
+        where: { email: email },
         select: {
           uuid: true,
           name: true,
           surname: true,
           email: true,
           year: true,
-          role: true
-        }
-      })
+          role: true,
+        },
+      });
 
       console.log(user);
       return user;
@@ -76,8 +79,7 @@ class UserRepository {
     password,
     email,
     year,
-  }: 
-  {
+  }: {
     name: string;
     surname: string;
     password: string;
@@ -169,11 +171,33 @@ class UserRepository {
     throw new Error("Internal Server Error");
   }
 
-  public async updateUserPassword(userId: string, hashedPassword: string): Promise<User> {
-    return await db.user.update({
-      where: { uuid: userId },
-      data: { password: hashedPassword },
-    });
+  public async updateUserPassword(
+    userId: string,
+    newPassword: string
+  ): Promise<User> {
+    try {
+      const user = await this.getUserByID(userId);
+      if (!user) throw new Error("User does not exists.");
+
+      const hashedPassword = await Bun.password.hash(
+        newPassword + user.salt,
+        "bcrypt"
+      );
+      return await db.user.update({
+        where: { uuid: userId },
+        data: { password: hashedPassword },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case "P2025":
+            throw new Error("Record does not exists.");
+          default:
+            throw new Error(error.code);
+        }
+      }
+    }
+    throw new Error("Internal Server Error");
   }
 }
 
