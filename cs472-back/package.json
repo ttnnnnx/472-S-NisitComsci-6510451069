@@ -7,13 +7,13 @@
   },
   "dependencies": {
     "@elysiajs/swagger": "^1.2.2",
-    "@prisma/client": "^6.4.1",
+    "@prisma/client": "^6.5.0",
     "cs472-back": "file:",
-    "elysia": "latest",
-    "prisma": "^6.4.1"
+    "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "prisma": "^6.5.0"
   },
   "module": "src/index.js"
 }

@@ -1,3 +1,4 @@
+// ChooseCourseToReview.tsx
 import { Link, useLoaderData, type LoaderFunction, type MetaFunction } from "react-router";
 import CourseRepository from "./repositories/CourseRepository.server";
 import LogoutButton from "./components/LogoutButton";
@@ -20,13 +21,20 @@ export default function ChooseCourseToReview() {
 
     return (
         <div className="bg-slate-300 min-h-screen p-6 relative">
-            <LogoutButton/>
-            {/* ปุ่มมุมขวาบน */}
-            <Link to="/my-course-list">
-                <button className="absolute top-6 right-6 px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition">
-                    Choose Your Course
-                </button>
-            </Link>
+            <LogoutButton />
+            {/* ปุ่มสำหรับไปยังหน้าของ SectionFormPage */}
+            <div className="absolute top-6 right-6 space-x-4">
+                <Link to="/my-course-list">
+                    <button className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition">
+                        Choose Your Course
+                    </button>
+                </Link>
+                <Link to="/section-form">
+                    <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
+                        ไปยังหน้า Section Form
+                    </button>
+                </Link>
+            </div>
 
             <h1 className="text-black font-bold text-2xl mb-6">
                 เลือกคอร์สที่ต้องการรีวิว
