@@ -2,6 +2,7 @@ import Elysia, { t } from "elysia";
 import AuthRepository from "../repositories/AuthRepository";
 import UserRepository from "../repositories/UserRepository";
 import { PasswordResetToken } from "@prisma/client";
+import { EmailService } from "../../services/emailService";
 
 const AuthController = new Elysia({
   prefix: "/api/auth",
@@ -60,7 +61,11 @@ AuthController.post(
     if (!user) return { error: "User not found" };
 
     const resetToken = await authRepo.generateResetToken(user.uuid);
+
     //TODO: send email with resetToken.token
+    await EmailService.sendPasswordResetEmail(user.email, resetToken.token);
+    console.log("Email: ", user.email)
+    console.log("Token: ", resetToken.token);
 
     return resetToken;
   },
@@ -91,7 +96,7 @@ AuthController.post(
       tokenEntry.user_uuid,
       body.newPassword
     );
-    await authRepo.deleteResetToken(body.token);
+    await authRepo.deleteResetToken(body.token); //Delete token after update data
 
     return { message: "Password updated successfully", updatedUser: updatedUser };
   },
