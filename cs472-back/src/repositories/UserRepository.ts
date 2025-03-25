@@ -97,7 +97,6 @@ class UserRepository {
           email: email,
           year: year,
           salt: salt,
-          // role: role,
         },
       });
       return response;

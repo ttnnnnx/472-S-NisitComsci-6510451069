@@ -49,7 +49,7 @@ UserController.get(
       description: "Get user by email from database",
     },
   }
-)
+);
 
 UserController.get(
   "/get/:id",
@@ -115,8 +115,8 @@ UserController.post(
       email: t.String({
         maxLength: 20,
         error: {
-          maxLength: "Email should not longer than 20 characters"
-        }
+          maxLength: "Email should not longer than 20 characters",
+        },
       }),
       year: t.Number({
         minimum: 1,
@@ -126,8 +126,6 @@ UserController.post(
           maximum: "Year should be 1-8",
         },
       }),
-      // role: t.Enum(Role),
-      // salt: t.Optional(t.String()),
     }),
     detail: {
       summary: "Create User",
@@ -142,7 +140,7 @@ UserController.post(
     try {
       const userRepository = new UserRepository();
       const user = await userRepository.login(body.email, body.password);
-      return { message: "Login Successful", user:user};
+      return { message: "Login Successful", user: user };
     } catch (error: any) {
       return { error: error.message };
     }
@@ -155,7 +153,7 @@ UserController.post(
     detail: {
       summary: "Login User",
       description: "Login User in the database",
-    }
+    },
   }
 );
 
@@ -174,6 +172,7 @@ UserController.put(
       password: t.Optional(t.String()),
       email: t.Optional(t.String()),
       year: t.Optional(t.Number()),
+      role: t.Optional(t.Enum({ student: "student", teacher: "teacher" })),
     }),
     detail: {
       summary: "Update User",
