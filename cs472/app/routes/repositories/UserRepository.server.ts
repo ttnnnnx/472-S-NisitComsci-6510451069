@@ -26,7 +26,6 @@ export default class UserRepository {
     const response = await fetch(`${BACKEND_URL}/api/user/getByEmail/${email}`);
     const data: User = await response.json();
     
-    // console.log("Backend Response getUserByEmail: ", email, data);
     return data;
   }
 
@@ -47,7 +46,28 @@ export default class UserRepository {
     });
     const data: User = await response.json();
     
-    // console.log("Backend Response createUser: ", data);
+    return data;
+  }
+
+  public async updateUser(
+    uuid: string,
+    name?: string,
+    surname?: string,
+    password?: string,
+    email?: string,
+    year?: number,
+    role?: "student" | "teacher"
+  ): Promise<User> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const response = await fetch(`${BACKEND_URL}/api/user/update`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uuid, name, surname, password, email, year, role }),
+    });
+    const data: User = await response.json();
+    
     return data;
   }
 }
