@@ -47,6 +47,24 @@ ExamController.get(
   }
 );
 
+ExamController.get(
+  "/get/course/:course_id",
+  async ({ params: { course_id } }) => {
+    const examRepo = new ExamRepository();
+    const exams = await examRepo.getExamsByCourseId(course_id);
+    return exams;
+  },
+  {
+    params: t.Object({
+      course_id: t.String(),
+    }),
+    detail: {
+      summary: "Get Exam by course id",
+      description: "Get Exam by course id from database",
+    },
+  }
+);
+
 ExamController.post(
   "/create",
   async ({ body }) => {
