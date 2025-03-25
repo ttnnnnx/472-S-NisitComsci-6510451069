@@ -47,7 +47,7 @@ export async function action({ request }: ActionFunctionArgs) {
   } else {
     let validPassword:boolean = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,12}$/.test(password);
     if (!validPassword) {
-      errors.password = "Password should contain 8-12 characters with Upper case, Lower case, numeric and special characters"
+      errors.password = "Password should contain 8-12 characters with\n Upper case, Lower case, numeric and special characters"
     }
     if (validPassword && errors.password) {
       delete errors.password;
@@ -97,6 +97,7 @@ export default function Register() {
       >
         <h1 className="text-[#1E364C] font-extrabold text-3xl">Register</h1>
 
+        <div> 
         <input
           name="firstName"
           type="text"
@@ -104,41 +105,51 @@ export default function Register() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.firstName && (
-          <h1 className="text-red-500">{errors.firstName}</h1>
+          <h1 className="text-red-500 text-[12px]">{errors.firstName}</h1>
         )}
+        </div>
 
+        <div>
         <input
           name="lastName"
           type="text"
           placeholder="Last Name"
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
-        {errors.lastName && <h1 className="text-red-500">{errors.lastName}</h1>}
+        {errors.lastName && <h1 className="text-red-500 text-[12px]">{errors.lastName}</h1>}
+        </div>
 
+        <div>
         <input
           name="year"
           type="number"
           placeholder="year"
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
-        {errors.year && <h1 className="text-red-500">{errors.year}</h1>}
+        {errors.year && <h1 className="text-red-500 text-[12px]">{errors.year}</h1>}
+        </div>
 
+        <div>
         <input
           name="email"
           type="email"
           placeholder="Email"
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
-        {errors.email && <h1 className="text-red-500">{errors.email}</h1>}
+        {errors.email && <h1 className="text-red-500 text-[12px]">{errors.email}</h1>}
+        </div>
 
+        <div className="">
         <input
           name="password"
           type="password"
           placeholder="password"
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
-        {errors.password && <h1 className="text-red-500">{errors.password}</h1>}
+        {errors.password && <h1 className="text-red-500 text-[12px] w-3xs">{errors.password}</h1>}
+        </div>
 
+        <div>
         <input
           name="confirmPassword"
           type="password"
@@ -146,8 +157,9 @@ export default function Register() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF] w-full"
         ></input>
         {errors.confirmPassword && (
-          <h1 className="text-red-500">{errors.confirmPassword}</h1>
+          <h1 className="text-red-500 text-[12px]">{errors.confirmPassword}</h1>
         )}
+        </div>
 
         <button
           className="bg-[#7793AE] text-white p-2 rounded w-40 hover:bg-[#43586c]"

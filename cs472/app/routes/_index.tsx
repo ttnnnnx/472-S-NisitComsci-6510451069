@@ -1,5 +1,6 @@
 import { Link, redirect, useLoaderData, type LoaderFunctionArgs, type MetaFunction } from "react-router";
 import { authCookie } from "~/utils/session.server";
+import MenuBar from "./components/MenuBar";
 
 
 export const meta: MetaFunction = () => {
@@ -19,15 +20,19 @@ export async function loader({request}: LoaderFunctionArgs) {
 export default function Index() {
   const {user} = useLoaderData<typeof loader>();
   return (
-    <div className="bg-slate-300 h-screen flex flex-col justify-center items-center">
-      <h1 className="text-black font-bold text-2xl">
-        Welcome {user.name} {user.surname}! to Nisit Com Sci
-      </h1>
-      <Link to="/choose-course-to-review">
-        <button className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
-          Choose Course to Review
-        </button>
-      </Link>
+    <div className="flex">
+      <MenuBar user={user}/>
+
+      <div className="bg-slate-300 w-screen h-screen flex flex-col justify-center items-center">
+        <h1 className="text-black font-bold text-2xl">
+         Welcome {user.name} {user.surname}! to Nisit Com Sci
+       </h1>
+        <Link to="/choose-course-to-review">
+          <button className="mt-4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
+            Choose Course to Review
+          </button>
+       </Link>
+      </div>
     </div>
   );
 }
