@@ -1,6 +1,7 @@
-import { Link, useLoaderData, type LoaderFunction, type MetaFunction } from "react-router";
+import { Link, redirect, useLoaderData, type LoaderFunction, type MetaFunction } from "react-router";
 import CourseRepository from "./repositories/CourseRepository.server";
 import LogoutButton from "./components/LogoutButton";
+import { authCookie } from "~/utils/session.server";
 
 export const meta: MetaFunction = () => {
     return [
@@ -9,7 +10,12 @@ export const meta: MetaFunction = () => {
     ];
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+    // ตรวจสอบ session ของผู้ใช้
+  const session = request.headers.get("Cookie");
+  const user: AuthCookie = await authCookie.parse(session);
+  if (!user) return redirect("/login");
+
     const courseRepository = new CourseRepository();
     const courses: Course[] = await courseRepository.getAllCourse();
     return { courses };
