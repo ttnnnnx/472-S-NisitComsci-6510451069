@@ -90,7 +90,7 @@ export default function Login() {
           Login
         </button>
         <div className="flex flex-row gap-2">
-          <h1 className="text-[#1E364C] text-[12px]">Don't have an account?</h1>
+          <h1 className="text-[#1E364C] text-[12px] ">Don't have an account?</h1>
           <Link
             to="/register"
             prefetch="render"

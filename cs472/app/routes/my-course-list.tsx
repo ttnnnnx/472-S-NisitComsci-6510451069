@@ -13,6 +13,7 @@ import CourseRepository from "./repositories/CourseRepository.server";
 import EnrollmentRepository from "./repositories/EnrollmentRepository.server";
 import { authCookie } from "~/utils/session.server";
 import LogoutButton from "./components/LogoutButton";
+import MenuBar from "./components/MenuBar";
 
 export const loader: LoaderFunction = async ({ request }) => {
   // ตรวจสอบ session ของผู้ใช้
@@ -70,8 +71,9 @@ export default function MyCourseList() {
   const fetcher = useFetcher<ActionMessage>();
 
   return (
+    <div className="flex">
+      <MenuBar user={user}/>
     <div className="p-4">
-      <LogoutButton />
       <h1 className="text-2xl font-bold">{user.name} Course List</h1>
       <fetcher.Form method="post" className="mt-4 space-y-4">
         <ul className="space-y-2">
@@ -113,6 +115,7 @@ export default function MyCourseList() {
           บันทึก
         </button>
       </fetcher.Form>
+    </div>
     </div>
   );
 }
