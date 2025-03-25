@@ -10,7 +10,8 @@
     "@prisma/client": "^6.4.1",
     "cs472-back": "file:",
     "elysia": "latest",
-    "prisma": "^6.4.1"
+    "prisma": "^6.4.1",
+    "resend": "^4.1.2"
   },
   "devDependencies": {
     "bun-types": "latest"

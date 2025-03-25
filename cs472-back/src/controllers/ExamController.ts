@@ -85,3 +85,5 @@ ExamController.delete(
     },
   }
 );
+
+export default ExamController;
