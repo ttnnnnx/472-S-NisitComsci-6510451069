@@ -16,6 +16,7 @@ class CourseRepository {
 
   // สร้าง Course
   public async createCourse(course: Course): Promise<Course> {
+    console.log("Course Data to Create:", course);
     return await db.course.create({
       data: course
     });
