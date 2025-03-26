@@ -24,7 +24,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   console.log("Course IDs:", courseIds);
 
   const courseRepo = new CourseRepository();
-  const courses: Course[] = await courseRepo.getCoursesByIds(courseIds);
+  const courses: Course[] = await courseRepo.getCoursesListByIds(courseIds);
   console.log("Courses: ", courses);
   return { user, courses };
 };

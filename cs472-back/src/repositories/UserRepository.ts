@@ -44,7 +44,7 @@ class UserRepository {
       );
 
       //Debugging log
-      console.log("isValidPassword: ", isValidPassword);
+      // console.log("isValidPassword: ", isValidPassword);
 
       if (!isValidPassword) {
         console.log("Invalid email or password");
@@ -63,7 +63,7 @@ class UserRepository {
         },
       });
 
-      console.log(user);
+      // console.log(user);
       return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {

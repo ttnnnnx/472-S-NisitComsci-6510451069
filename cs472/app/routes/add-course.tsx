@@ -25,22 +25,41 @@ export async function action({ request }: ActionFunctionArgs) {
   const course_name = formData.get("course_name") as string;
   const detail = formData.get("detail") as string;
 
-  console.log("FormData:", { course_id, course_name, detail });
+  // console.log("FormData:", { course_id, course_name, detail });
+
+  let errors: Record<string, any> = {};
 
   const courseRepo = new CourseRepository();
+  const existCourseID = await courseRepo.getCourseById(course_id);
+  if (existCourseID) 
+    errors.course_id = "The Course ID you entered is already in use. Please try a different one.";
+  
+  const existCourseName = await courseRepo.getCourseByName(course_name);
+  if(existCourseName)
+    errors.course_name = "The Course name you entered is already in use. Please try a different one.";
+
+  if (Object.keys(errors).length > 0) {
+    //log check errror
+    console.log("Errors: ", errors);
+    return { errors }; // Return all errors if any exist
+  }
+
   const newCourse = await courseRepo.createCourse(
     course_id,
     course_name,
     detail
   );
-  console.log("New Course: ", newCourse);
+  // console.log("New Course: ", newCourse);
 
   const session = request.headers.get("Cookie");
   const user: AuthCookie = await authCookie.parse(session);
 
   const teachRepo = new TeachRepository();
-  const newTeachRecord = await teachRepo.createTeachRecord(user.uuid, newCourse.course_id);
-  console.log("New Teach Record: ", newTeachRecord);
+  const newTeachRecord = await teachRepo.createTeachRecord(
+    user.uuid,
+    newCourse.course_id
+  );
+  // console.log("New Teach Record: ", newTeachRecord);
 
   return null;
 }
@@ -52,12 +71,13 @@ type LoaderData = {
 export default function AddCourse() {
   const fetcher = useFetcher();
   const { user } = useLoaderData<LoaderData>();
+  const errors = fetcher.data?.errors || {};
 
   return (
     <div className="flex">
       <MenuBar user={user} />
 
-      <div className="bg-slate-300 h-screen w-screen flex flex-col justify-center items-center">
+      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col justify-center items-center relative">
         <h1 className="text-2xl font-semibold mb-4">Create Course</h1>
         <fetcher.Form method="post" className="space-y-4">
           <div>
@@ -68,6 +88,9 @@ export default function AddCourse() {
               required
               className="w-full p-2 border rounded"
             />
+            {errors.course_id && (
+              <h1 className="text-red-500 text-[12px]">{errors.course_id}</h1>
+            )}
           </div>
 
           <div>
@@ -78,6 +101,9 @@ export default function AddCourse() {
               required
               className="w-full p-2 border rounded"
             />
+            {errors.course_name && (
+              <h1 className="text-red-500 text-[12px]">{errors.course_name}</h1>
+            )}
           </div>
 
           <div>
@@ -91,7 +117,7 @@ export default function AddCourse() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded"
+            className="w-full bg-[#7793AE] hover:bg-[#43586c] font-semibold text-white py-2 rounded-lg shadow-md"
           >
             Create Course
           </button>

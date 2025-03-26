@@ -45,7 +45,7 @@ export async function action({ request }: ActionFunctionArgs) {
         role: response.user.role,
       };
       
-      console.log(authCookieUser);
+      console.log("Auth Cookie: ",authCookieUser);
       return redirect("/", {
         headers: {
           "Set-Cookie": await authCookie.serialize(authCookieUser),
