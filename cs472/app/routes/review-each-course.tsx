@@ -1,16 +1,25 @@
 import React from "react";
+import ReviewRepository from "./repositories/ReviewRepository.server";
+import MenuBar from "./components/MenuBar";
+import { Link, redirect, useLoaderData, type LoaderFunctionArgs } from "react-router";
+import { authCookie } from "~/utils/session.server";
+
+export async function loader({request}: LoaderFunctionArgs) {
+  const session = request.headers.get("Cookie");
+  const user : AuthCookie = await authCookie.parse(session);
+  if (!user) return redirect("/login");
+  return {user};
+}
 
 const CourseReviews: React.FC = () => {
+  const {user} = useLoaderData<typeof loader>();
   return (
-    <div className="bg-gray-200 p-4 min-h-screen">
+    <div className="flex">
+      <MenuBar user={user}/>
+    <div className="bg-gray-200 p-4 min-h-screen w-screen">
       {/* Course Header */}
       <div className="bg-gray-400 p-2 mb-4">
         <h1 className="text-lg">01418111 - Introduction to Computer Science</h1>
-      </div>
-
-      {/* Course Description */}
-      <div className="bg-gray-300 p-4 mb-4">
-        <p>Description</p>
       </div>
 
       {/* Buttons */}
@@ -35,12 +44,13 @@ const CourseReviews: React.FC = () => {
           </div>
 
           <button className="bg-gray-300 p-4 mb-2 w-full text-left">
-            <p>Description - ทำ Block นี้เป็น Button ทั้ง Block ได้หรือไม่</p>
+            <p>Description</p>
           </button>
 
           <button className="bg-red-500 text-white px-4 py-2">Delete</button>
         </div>
       ))}
+    </div>
     </div>
   );
 };

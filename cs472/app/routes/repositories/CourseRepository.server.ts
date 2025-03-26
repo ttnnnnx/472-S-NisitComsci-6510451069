@@ -6,4 +6,30 @@ export default class CourseRepository {
     const data: Course[] = await response.json();
     return data;
   }
+
+  public async getCoursesByIds(courseIds: string[]): Promise<Course[]> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const queryParam = courseIds.join(","); // แปลง Array เป็น String
+    const response = await fetch(`${BACKEND_URL}/course/getList/${queryParam}`);
+    const data: Course[] = await response.json();
+    return data;
+  }
+
+  public async createCourse(
+    course_id: string,
+    course_name: string,
+    course_detail: string
+  ): Promise<Course> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const response = await fetch(`${BACKEND_URL}/api/course/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ course_id, course_name, course_detail }),
+    });
+    const data: Course = await response.json();
+
+    return data;
+  }
 }

@@ -9,6 +9,12 @@ class CourseRepository {
     });
   }
 
+  public async getCourseListById(course_id: string[]): Promise<Course[]|null> {
+    return await db.course.findMany({
+      where: {course_id: {in: course_id}}
+    });
+  }
+
   // ดึงข้อมูล Course ทั้งหมด
   public async getAllCourse(): Promise<Course[]> {
     return await db.course.findMany();
@@ -16,6 +22,7 @@ class CourseRepository {
 
   // สร้าง Course
   public async createCourse(course: Course): Promise<Course> {
+    console.log("Course Data to Create:", course);
     return await db.course.create({
       data: course
     });

@@ -14,6 +14,12 @@ class ExamRepository {
     return await db.exam.findMany();
   }
 
+  public async getExamsByCourseId(course_id: string): Promise<Exam[]> {
+    return await db.exam.findMany({
+      where: { course_id: course_id },
+    });
+  }
+
   public async createExam({
     course_id,
     date,

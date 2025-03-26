@@ -44,6 +44,8 @@ export async function action({ request }: ActionFunctionArgs) {
         year: response.user.year,
         role: response.user.role,
       };
+      
+      console.log(authCookieUser);
       return redirect("/", {
         headers: {
           "Set-Cookie": await authCookie.serialize(authCookieUser),
@@ -78,7 +80,7 @@ export default function Login() {
           className="border border-gray-300 p-2 text-[#1E364C] bg-[#FFFFFF]"
         />
         {fetcher.data?.error && (
-          <div className="text-red-500">{fetcher.data.error}</div>
+          <div className="text-red-500 text-[12px]">{fetcher.data.error}</div>
         )}
         <button
           name="_action"
@@ -88,7 +90,7 @@ export default function Login() {
           Login
         </button>
         <div className="flex flex-row gap-2">
-          <h1 className="text-[#1E364C] text-[12px]">Don't have an account?</h1>
+          <h1 className="text-[#1E364C] text-[12px] ">Don't have an account?</h1>
           <Link
             to="/register"
             prefetch="render"
