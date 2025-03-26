@@ -1,6 +1,7 @@
 import React from "react";
+import ReviewRepository from "./repositories/ReviewRepository.server";
 import MenuBar from "./components/MenuBar";
-import { redirect, useLoaderData, type LoaderFunctionArgs } from "react-router";
+import { Link, redirect, useLoaderData, type LoaderFunctionArgs } from "react-router";
 import { authCookie } from "~/utils/session.server";
 
 export async function loader({request}: LoaderFunctionArgs) {
@@ -19,11 +20,6 @@ const CourseReviews: React.FC = () => {
       {/* Course Header */}
       <div className="bg-gray-400 p-2 mb-4">
         <h1 className="text-lg">01418111 - Introduction to Computer Science</h1>
-      </div>
-
-      {/* Course Description */}
-      <div className="bg-gray-300 p-4 mb-4">
-        <p>Description</p>
       </div>
 
       {/* Buttons */}
@@ -48,7 +44,7 @@ const CourseReviews: React.FC = () => {
           </div>
 
           <button className="bg-gray-300 p-4 mb-2 w-full text-left">
-            <p>Description - ทำ Block นี้เป็น Button ทั้ง Block ได้หรือไม่</p>
+            <p>Description</p>
           </button>
 
           <button className="bg-red-500 text-white px-4 py-2">Delete</button>
