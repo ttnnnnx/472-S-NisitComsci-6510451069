@@ -8,6 +8,8 @@
   "dependencies": {
     "@elysiajs/swagger": "^1.2.2",
     "@prisma/client": "^6.5.0",
+    "@remix-run/node": "^2.16.2",
+    "@remix-run/react": "^2.16.2",
     "cs472-back": "file:",
 
     "elysia": "latest",
