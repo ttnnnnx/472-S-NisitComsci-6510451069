@@ -69,7 +69,7 @@ const CourseReviews: React.FC = () => {
           reviews.map((review, index) => (
               <div key={index} className="bg-gray-500 p-4 mb-4">
                 <div className="flex items-center mb-2">
-                  <div className="bg-gray-300 p-2 flex-1">{review.user_uuid}</div>
+                  <div className="bg-gray-300 p-2 flex-1">{user.name}</div>
                   <div className="bg-gray-300 p-2 ml-2">{review.rating}/10</div>
                 </div>
                 <div className="bg-gray-300 p-4 mb-2 w-full text-left">
