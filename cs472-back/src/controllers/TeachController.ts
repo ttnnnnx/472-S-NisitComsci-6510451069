@@ -11,7 +11,7 @@ TeachController.get(
   "/get/:user_uuid",
   async ({ params: { user_uuid } }) => {
     const teachRepo = new TeachRepository();
-    const teachs = teachRepo.getTeachsByUser(user_uuid);
+    const teachs: Teach[] = await teachRepo.getTeachsByUser(user_uuid);
     return teachs;
   },
   {
@@ -19,6 +19,21 @@ TeachController.get(
     detail: {
       summary: "Get Teach By user uuid",
       description: "Get Teach By user uuid from database",
+    },
+  }
+);
+
+TeachController.get(
+  "/getAll",
+  async () => {
+    const teachRepository = new TeachRepository();
+    const teachs: Teach[] = await teachRepository.getAllTeachs();
+    return teachs;
+  },
+  {
+    detail: {
+      summary: "Get All Teach",
+      description: "Get all teach from database",
     },
   }
 );

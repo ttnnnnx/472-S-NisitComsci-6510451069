@@ -31,6 +31,24 @@ courseController.get(
   }
 );
 
+//get course ที่ต้องการพร้อมกันหลายตัว input = course_id1,course_id2,... ไม่ต้อง space
+courseController.get(
+  "/getList/:course_id",
+  async ({params}) => {
+    const courseRepository = new CourseRepository();
+
+    const courseIds = params.course_id.split(",");
+    const courses = await courseRepository.getCourseListById(courseIds);
+    return courses;
+  },
+  {
+    detail: {
+      summary: "Get Course list by course_id",
+      description: "Get list of Course from database by using course_id"
+    }
+  }
+)
+
 //Create a course
 courseController.post(
   "/create",

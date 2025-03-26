@@ -15,4 +15,11 @@ export default class ExamRepository {
     const data: Exam = await response.json();
     return data;
   }
+
+  public async getExamsByCourseId(course_id: string): Promise<Exam[]> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const response = await fetch(`${BACKEND_URL}/api/exam/get/course/${course_id}`);
+    const data: Exam[] = await response.json();
+    return data;
+  }
 }

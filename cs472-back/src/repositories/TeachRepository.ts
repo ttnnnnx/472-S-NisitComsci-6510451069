@@ -4,9 +4,13 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 class TeachRepository {
   public async getTeachsByUser(user_uuid: string): Promise<Teach[]> {
-    return await db.enrollment.findMany({
+    return await db.teach.findMany({
       where: { user_uuid: user_uuid },
     });
+  }
+
+  public async getAllTeachs(): Promise<Teach[]> {
+    return await db.teach.findMany();
   }
 
   public async createTeach({

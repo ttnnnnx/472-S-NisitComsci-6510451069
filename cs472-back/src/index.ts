@@ -6,6 +6,7 @@ import reviewController from "./controllers/ReviewController";
 import enrollmentController from "./controllers/EnrollmentController";
 import examController from "./controllers/ExamController";
 import authController from "./controllers/AuthController";
+import teachController from "./controllers/TeachController";
 
 const app = new Elysia();
 
@@ -20,6 +21,7 @@ app.use(
         { name: "Review", description: "Review endpoint" },
         { name: "Enrollment", description: "Enrollment endpoint" },
         { name: "Auth", description: "Auth endpoint" },
+        { name: "Teach", description: "Teach endpoint" },
       ],
     },
   })
@@ -31,6 +33,7 @@ app.use(reviewController);
 app.use(enrollmentController);
 app.use(examController);
 app.use(authController);
+app.use(teachController);
 
 app.listen(3000);
 

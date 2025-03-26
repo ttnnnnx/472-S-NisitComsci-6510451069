@@ -9,6 +9,12 @@ class CourseRepository {
     });
   }
 
+  public async getCourseListById(course_id: string[]): Promise<Course[]|null> {
+    return await db.course.findMany({
+      where: {course_id: {in: course_id}}
+    });
+  }
+
   // ดึงข้อมูล Course ทั้งหมด
   public async getAllCourse(): Promise<Course[]> {
     return await db.course.findMany();
