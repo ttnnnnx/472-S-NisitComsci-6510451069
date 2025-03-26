@@ -73,8 +73,9 @@ export default function MyCourseList() {
   return (
     <div className="flex">
       <MenuBar user={user}/>
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">{user.name} Course List</h1>
+    <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative ">
+      <h1 className="text-[#0f1d2a] text-2xl font-bold mb-6">{user.name} Course List</h1>
+      <div className="bg-white p-4 rounded-lg shadow-lg max-h-[800px] overflow-y-auto border border-gray-300">
       <fetcher.Form method="post" className="mt-4 space-y-4">
         <ul className="space-y-2">
           {allCourses.map((course) => {
@@ -96,25 +97,21 @@ export default function MyCourseList() {
           })}
         </ul>
         {fetcher.data?.message && (
-          <p className="text-green-500">{fetcher.data.message}</p>
+          <p className="text-[#397d44]">{fetcher.data.message}</p>
         )}
         {fetcher.data?.error && (
-          <p className="text-red-500">{fetcher.data.error}</p>
+          <p className="text-red-700">{fetcher.data.error}</p>
         )}
-        <Link to="/choose-course-to-review">
-          <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-1">
-            กลับ
-          </button>
-        </Link>
         <button
           type="submit"
           name="_action"
           value="updateEnrollments"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="mt-4 px-4 py-2 bg-[#7793AE] text-white font-semibold rounded-lg shadow-md hover:bg-[#43586c] transition "
         >
-          บันทึก
+          save
         </button>
       </fetcher.Form>
+      </div>
     </div>
     </div>
   );
