@@ -1,4 +1,4 @@
-//getUserSession(ไม่รู้ทำไง)
+//getUserSession
 
 import {
   Form,

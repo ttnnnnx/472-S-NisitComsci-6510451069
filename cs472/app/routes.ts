@@ -35,4 +35,6 @@ const createHybridRouter = async (
 
 export default createHybridRouter(() => [
   route("/api/logout", "routes/api/logout.ts"),
+  route("/section-forms", "routes/section-forms.tsx"),
+  route("/create-section-form", "routes/create-section-form.tsx"),
 ]) satisfies Promise<RouteConfig>;
