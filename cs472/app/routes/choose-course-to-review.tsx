@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+
 // ChooseCourseToReview.tsx
-import { Link, useLoaderData, type LoaderFunction, type MetaFunction } from "react-router";
-=======
 import { Link, redirect, useLoaderData, type LoaderFunction, type MetaFunction } from "react-router";
->>>>>>> 5831770c680aa630bedc03063f4a10f6ba754515
 import CourseRepository from "./repositories/CourseRepository.server";
 import MenuBar from "./components/MenuBar";
 import { authCookie } from "~/utils/session.server";
@@ -31,28 +28,10 @@ export default function ChooseCourseToReview() {
     // const {user} = useLoaderData<LoaderData>();
 
     return (
-<<<<<<< HEAD
-        <div className="bg-slate-300 min-h-screen p-6 relative">
-            <LogoutButton />
-            {/* ปุ่มสำหรับไปยังหน้าของ SectionFormPage */}
-            <div className="absolute top-6 right-6 space-x-4">
-                <Link to="/my-course-list">
-                    <button className="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition">
-                        Choose Your Course
-                    </button>
-                </Link>
-                <Link to="/section-form">
-                    <button className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition">
-                        ไปยังหน้า Section Form
-                    </button>
-                </Link>
-            </div>
-=======
         <div className="flex">
             <MenuBar user={user}/>
         <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative ">
->>>>>>> 5831770c680aa630bedc03063f4a10f6ba754515
-
+            
             <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
                 Choose Course To Review
             </h1>
