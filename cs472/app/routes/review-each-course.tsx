@@ -39,7 +39,7 @@ const CourseReviews: React.FC = () => {
       <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
         {/* Course Header */}
         <div className="bg-gray-400 p-2 mb-4">
-          <h1 className="text-lg">{course[0].course_id} {course[0].course_name}</h1>
+          <h1 className="text-lg">{course[0].course_id} - {course[0].course_name}</h1>
         </div>
 
         {/* Course Description */}
