@@ -9,6 +9,7 @@ import { authCookie } from "~/utils/session.server";
 import CourseRepository from "./repositories/CourseRepository.server";
 import MenuBar from "./components/MenuBar";
 import TeachRepository from "./repositories/TeachRepository.server";
+import { useState, useEffect } from "react";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = request.headers.get("Cookie");
@@ -31,12 +32,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const courseRepo = new CourseRepository();
   const existCourseID = await courseRepo.getCourseById(course_id);
-  if (existCourseID) 
-    errors.course_id = "The Course ID you entered is already in use. Please try a different one.";
-  
+  if (existCourseID)
+    errors.course_id =
+      "The Course ID you entered is already in use. Please try a different one.";
+
   const existCourseName = await courseRepo.getCourseByName(course_name);
-  if(existCourseName)
-    errors.course_name = "The Course name you entered is already in use. Please try a different one.";
+  if (existCourseName)
+    errors.course_name =
+      "The Course name you entered is already in use. Please try a different one.";
 
   if (Object.keys(errors).length > 0) {
     //log check errror
@@ -61,7 +64,7 @@ export async function action({ request }: ActionFunctionArgs) {
   );
   // console.log("New Teach Record: ", newTeachRecord);
 
-  return null;
+  return { success: "Create course successful!" };
 }
 
 type LoaderData = {
@@ -72,6 +75,16 @@ export default function AddCourse() {
   const fetcher = useFetcher();
   const { user } = useLoaderData<LoaderData>();
   const errors = fetcher.data?.errors || {};
+  const successMessage = fetcher.data?.success || "";
+
+  const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    if (successMessage) {
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 3000);
+    }
+  }, [successMessage]);
 
   return (
     <div className="flex">
@@ -114,6 +127,12 @@ export default function AddCourse() {
               className="w-full p-2 border rounded"
             />
           </div>
+
+          {showMessage && (
+            <div className="bg-green-500 text-white p-2 rounded mb-4">
+              {successMessage}
+            </div>
+          )}
 
           <button
             type="submit"
