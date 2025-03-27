@@ -12,7 +12,6 @@ import {
 import CourseRepository from "./repositories/CourseRepository.server";
 import EnrollmentRepository from "./repositories/EnrollmentRepository.server";
 import { authCookie } from "~/utils/session.server";
-import LogoutButton from "./components/LogoutButton";
 import MenuBar from "./components/MenuBar";
 
 export const loader: LoaderFunction = async ({ request }) => {

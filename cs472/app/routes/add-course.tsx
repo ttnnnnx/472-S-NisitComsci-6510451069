@@ -133,7 +133,7 @@ export default function AddCourse() {
           </div>
 
           {showMessage && (
-            <div className="bg-green-500 text-white p-2 rounded mb-4">
+            <div className="text-[#397d44]">
               {successMessage}
             </div>
           )}
