@@ -36,27 +36,27 @@ const CourseReviews: React.FC = () => {
   return (
     <div className="flex">
       <MenuBar user={user} />
-      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
+      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative mx-auto overflow-y-auto border">
         {/* Course Header */}
-        <div className="bg-gray-400 p-2 mb-4">
-          <h1 className="text-lg">{course[0].course_id} {course[0].course_name}</h1>
+        <div className="bg-white p-4 mb-4 rounded-2xl w-full">
+          <h1 className="text-lg font-bold text-[#0f1d2a]">{course[0].course_id} {course[0].course_name}</h1>
         </div>
 
         {/* Course Description */}
-        <div className="bg-gray-300 p-4 mb-4">
+        <div className="bg-white p-4 mb-4 rounded-2xl w-full">
           <p>{course[0].course_detail}</p>
         </div>
 
         {/* Buttons */}
         <div className="flex mb-4">
-          <button className="bg-gray-400 text-black px-4 py-2 mr-2">
+          <button className="bg-[#7793AE] hover:bg-[#43586c] text-white px-4 py-2 mr-2 rounded-2xl transition">
             รีวิวทั้งหมด
           </button>
-          <button className="bg-gray-400 text-black px-4 py-2 mr-2">
+          <button className="bg-[#7793AE] hover:bg-[#43586c] text-white px-4 py-2 mr-2 rounded-2xl transition">
             คะแนนรวมวิชานี้ : {averageScore}/10
           </button>
           <Link to={`/create-review?course_id=01418111`}>
-            <button className="bg-green-500 text-black px-4 py-2 rounded-lg shadow-md hover:bg-[#43586c] transition">
+            <button className="bg-[#61815D] text-white px-4 py-2 rounded-2xl shadow-md hover:bg-[#263824] transition">
               สร้างรีวิว
             </button>
           </Link>
@@ -64,19 +64,20 @@ const CourseReviews: React.FC = () => {
 
         {/* Reviews Section */}
         {reviews.length === 0 ? (
-          <div>No reviews available.</div>
+          <div className="text-[#0f1d2a]">No reviews available.</div>
         ) : (
           reviews.map((review, index) => (
-              <div key={index} className="bg-gray-500 p-4 mb-4">
+              <div key={index} className="bg-amber-100 p-4 mb-4 rounded-2xl">
                 <div className="flex items-center mb-2">
-                  <div className="bg-gray-300 p-2 flex-1">{user.name}</div>
-                  <div className="bg-gray-300 p-2 ml-2">{review.rating}/10</div>
+                  <div className="bg-white p-2 flex-1 rounded-2xl">{user.name}</div>
+                  <div className="bg-[#61815D] p-2 ml-2 rounded-2xl text-white">{review.rating}/10</div>
                 </div>
-                <div className="bg-gray-300 p-4 mb-2 w-full text-left">
+                <div className="bg-white p-4 mb-2 w-full text-left rounded-2xl">
                   <p>{review.review_text}</p>
                 </div>
 
-                <button className="bg-red-500 text-white px-4 py-2">Delete</button>
+                <br/>
+                <button className="bg-red-700 hover:bg-red-500 text-white px-4 py-2 transition rounded-2xl">Delete</button>
               </div>
           ))
         )}
