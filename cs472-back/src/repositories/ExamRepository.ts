@@ -22,18 +22,21 @@ class ExamRepository {
 
   public async createExam({
     course_id,
-    date,
+    start_time,
+    end_time,
     room,
   }: {
     course_id: string;
-    date: Date;
+    start_time: Date;
+    end_time: Date;
     room: string;
   }): Promise<Exam> {
     try {
       const response = await db.exam.create({
         data: {
           course_id: course_id,
-          date: date,
+          start_time: start_time,
+          end_time: end_time,
           room: room,
         },
       });
@@ -55,6 +58,36 @@ class ExamRepository {
         where: { exam_id: exam_id },
       });
       return response;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        switch (error.code) {
+          case "P2025":
+            throw new Error("Record does not exists.");
+          default:
+            throw new Error(error.code);
+        }
+      }
+    }
+    throw new Error("Internal Server Error");
+  }
+
+  public async checkExamConflict({
+    room,
+    start_time,
+    end_time,
+  }: {
+    room: string;
+    start_time: Date;
+    end_time: Date;
+  }): Promise<Exam | null> {
+    try {
+      const conflict = await db.exam.findFirst({
+        where: {
+          room,
+          OR: [{ start_time: { lt: end_time }, end_time: { gt: start_time } }],
+        },
+      });
+      return conflict;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         switch (error.code) {
