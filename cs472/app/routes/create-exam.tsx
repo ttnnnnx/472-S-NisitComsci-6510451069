@@ -6,9 +6,9 @@ import {
   type LoaderFunction,
 } from "react-router";
 import { authCookie } from "~/utils/session.server";
-import MenuBar from "./components/MenuBar";
 import TeachRepository from "./repositories/TeachRepository.server";
 import CourseRepository from "./repositories/CourseRepository.server";
+import TMenuBar from "./components/TMenuBar";
 import ExamRepository from "./repositories/ExamRepository.server";
 import { useState, useEffect } from "react";
 
@@ -41,11 +41,6 @@ export async function action({ request }: ActionFunctionArgs) {
   console.log("Form Data: ", { course_id, start_time, end_time, room });
 
   let errors: Record<string, any> = {};
-
-  // if (!course_id) errors.course_id = "Please select a course.";
-  // if (!start_time) errors.start_time = "Start time is required.";
-  // if (!end_time) errors.end_time = "End time is required.";
-  // if (!room) errors.room = "Room is required.";
 
   const examRepo = new ExamRepository();
   const conflict = await examRepo.checkExamConflict(room, start_time, end_time);
@@ -80,40 +75,23 @@ type LoaderData = {
 export default function CreateExam() {
   const { user, courses } = useLoaderData<LoaderData>();
   const fetcher = useFetcher();
-  const errors = fetcher.data?.errors || {};
-  const successMessage = fetcher.data?.success || "";
-
-  const [showMessage, setShowMessage] = useState(false);
-
-  useEffect(() => {
-    if (successMessage) {
-      setShowMessage(true);
-      setTimeout(() => setShowMessage(false), 3000);
-    }
-  }, [successMessage]);
 
   return (
     <div className="flex">
-      <MenuBar user={user} />
+      <TMenuBar user={user} />
       <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col justify-center items-center">
         <fetcher.Form
           method="post"
-          className="flex flex-col gap-5 bg-white items-center rounded p-3 shadow-2xl"
+          className="flex flex-col gap-6 bg-white items-center rounded-lg p-6 shadow-2xl w-[600px]"
         >
           <h1 className="text-2xl font-semibold mb-4">Create Exam</h1>
-          <div className="flex flex-row gap-5">
-            <div className="flex flex-col gap-5">
-              <label>Course:</label>
-              <label>Start Date and Time:</label>
-              <label>End Date and Time:</label>
-              <label>Room:</label>
-            </div>
 
-            <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex items-center gap-4">
+              <label className="font-medium w-1/3">Course:</label>
               <select
                 name="course_id"
-                className="bg-white border rounded"
-                required
+                className="bg-amber-100 border rounded px-2 py-1 w-2/3"
               >
                 <option value="">-- Select Course --</option>
                 {courses.map((course) => (
@@ -122,43 +100,42 @@ export default function CreateExam() {
                   </option>
                 ))}
               </select>
+            </div>
 
+            <div className="flex items-center gap-4">
+              <label className="font-medium w-1/3">Start Date and Time:</label>
               <input
                 type="datetime-local"
                 name="start_time"
-                className="bg-white border rounded"
+                className="bg-white border rounded px-2 py-1 w-2/3"
                 required
               />
+            </div>
 
+            <div className="flex items-center gap-4">
+              <label className="font-medium w-1/3">End Date and Time:</label>
               <input
                 type="datetime-local"
                 name="end_time"
-                className="bg-white border rounded"
+                className="bg-white border rounded px-2 py-1 w-2/3"
                 required
               />
+            </div>
 
+            <div className="flex items-center gap-4">
+              <label className="font-medium w-1/3">Room:</label>
               <input
                 type="text"
                 name="room"
-                className="bg-white border rounded"
+                className="bg-amber-100 border rounded px-2 py-1 w-2/3"
                 required
               />
             </div>
           </div>
 
-          {showMessage && (
-            <div className="text-green-400 text-[12px]">
-              {successMessage}
-            </div>
-          )}
-
-          {errors.conflict && (
-            <h1 className="text-red-500 text-[12px]">{errors.conflict}</h1>
-          )}
-
           <button
             type="submit"
-            className="w-full bg-[#7793AE] hover:bg-[#43586c] font-semibold text-white py-2 rounded-lg shadow-md"
+            className="w-full bg-[#7793AE] hover:bg-[#43586c] font-semibold text-white py-2 rounded-lg shadow-md mt-4"
           >
             Create Exam
           </button>

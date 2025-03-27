@@ -7,9 +7,11 @@ import {
 } from "react-router";
 import { authCookie } from "~/utils/session.server";
 import CourseRepository from "./repositories/CourseRepository.server";
-import MenuBar from "./components/MenuBar";
 import TeachRepository from "./repositories/TeachRepository.server";
 import { useState, useEffect } from "react";
+import TMenuBar from "./components/TMenuBar";
+import TeacherCourseCard from "./components/TeacherCourse";
+
 
 export const loader: LoaderFunction = async ({ request }) => {
   const session = request.headers.get("Cookie");
@@ -88,10 +90,12 @@ export default function AddCourse() {
 
   return (
     <div className="flex">
-      <MenuBar user={user} />
+      <TMenuBar user={user} />
 
-      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col justify-center items-center relative">
-        <h1 className="text-2xl font-semibold mb-4">Create Course</h1>
+      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col items-center relative p-4 gap-4">
+
+        <div className="bg-white rounded-2xl p-6 w-full">
+        <h1 className="text-2xl font-semibold mb-4 text-center">Create Course</h1>
         <fetcher.Form method="post" className="space-y-4">
           <div>
             <label className="block text-sm font-medium">Course ID</label>
@@ -99,7 +103,7 @@ export default function AddCourse() {
               name="course_id"
               type="text"
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-blue-50"
             />
             {errors.course_id && (
               <h1 className="text-red-500 text-[12px]">{errors.course_id}</h1>
@@ -112,7 +116,7 @@ export default function AddCourse() {
               name="course_name"
               type="text"
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-blue-50"
             />
             {errors.course_name && (
               <h1 className="text-red-500 text-[12px]">{errors.course_name}</h1>
@@ -124,7 +128,7 @@ export default function AddCourse() {
             <textarea
               name="detail"
               required
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded bg-blue-50"
             />
           </div>
 
@@ -141,6 +145,15 @@ export default function AddCourse() {
             Create Course
           </button>
         </fetcher.Form>
+        </div>
+
+        <div className="w-full">
+          <div className="bg-white shadow-md rounded-2xl p-6">
+            <TeacherCourseCard/>
+          </div>
+
+        </div>
+        
       </div>
     </div>
   );

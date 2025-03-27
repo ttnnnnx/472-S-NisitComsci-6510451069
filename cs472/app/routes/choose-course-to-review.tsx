@@ -30,14 +30,16 @@ export default function ChooseCourseToReview() {
     return (
         <div className="flex">
             <MenuBar user={user}/>
-        <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative ">
+        <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-hidden">
             
             <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
                 Choose Course To Review
             </h1>
 
             {/* กล่อง Scrollable สำหรับรายชื่อคอร์ส */}
-            <div className="bg-white p-4 rounded-lg shadow-lg max-h-[800px] overflow-y-auto border border-gray-300">
+            {/* <div className="bg-white p-4 rounded-lg shadow-lg max-h-screen overflow-y-auto border border-gray-300"> */}
+            <div className="bg-white p-4 rounded-lg shadow-lg w-full mx-auto overflow-y-auto border border-gray-300"
+                         style={{ maxHeight: "min(85vh, 850px)" }}>
                 <ul className="space-y-4">
                     {courses.map((course) => (
                         <li key={course.course_id} className="bg-gray-100 p-4 rounded shadow">
