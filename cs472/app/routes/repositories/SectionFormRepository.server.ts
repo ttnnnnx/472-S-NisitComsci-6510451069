@@ -1,5 +1,6 @@
 // repositories/SectionFormRepository.server.ts
 export default class SectionFormRepository {
+    // ดึงรายการฟอร์มทั้งหมด
     public async getAllSectionForms(): Promise<any> {
         const BACKEND_URL = process.env.BACKEND_URL as string;
         const response = await fetch(`${BACKEND_URL}/section-form/all`);
@@ -9,6 +10,7 @@ export default class SectionFormRepository {
         return await response.json();
     }
 
+    // ดึงฟอร์มเดียวตาม formId
     public async getSectionFormById(formId: number): Promise<any> {
         const BACKEND_URL = process.env.BACKEND_URL as string;
         const response = await fetch(`${BACKEND_URL}/section-form/${formId}`);
@@ -18,6 +20,7 @@ export default class SectionFormRepository {
         return await response.json();
     }
 
+    // สร้างฟอร์มใหม่
     public async createSectionForm(formData: {
         Section_Form_Name: string;
         Section_Form_Detail: string;
@@ -38,6 +41,7 @@ export default class SectionFormRepository {
         return await response.json();
     }
 
+    // เข้าร่วมฟอร์มโดยส่งชื่อของนิสิต
     public async joinSectionForm(formId: number, Section_Form_Nisit_Name: string): Promise<any> {
         const BACKEND_URL = process.env.BACKEND_URL as string;
         const response = await fetch(`${BACKEND_URL}/section-form/join`, {
@@ -47,6 +51,19 @@ export default class SectionFormRepository {
         });
         if (!response.ok) {
             throw new Error("Failed to join section form");
+        }
+        return await response.json();
+    }
+
+    // ลบฟอร์มออกจากระบบ
+    public async deleteSectionForm(formId: number): Promise<any> {
+        const BACKEND_URL = process.env.BACKEND_URL as string;
+        const response = await fetch(`${BACKEND_URL}/section-form/${formId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        if (!response.ok) {
+            throw new Error("Failed to delete section form");
         }
         return await response.json();
     }

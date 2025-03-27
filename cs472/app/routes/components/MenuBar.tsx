@@ -25,6 +25,8 @@ export default function MenuBar({ user }: MenuBarProps) {
         className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Review Course</Link>
         <Link to="/exam-schedule" 
         className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Schedule</Link>
+        <Link to="/OpenSectionForm"
+          className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Open Section Form</Link>
       </nav>
       
       <LogoutButton/>

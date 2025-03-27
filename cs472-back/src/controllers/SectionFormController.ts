@@ -71,7 +71,7 @@ sectionFormController.post(
             Section_Form_Name: body.Section_Form_Name,
             Section_Form_Detail: body.Section_Form_Detail,
             Section_Form_Max_Number: body.Section_Form_Max_Number,
-            Section_Form_Status: body.Section_Form_Status,
+            Section_Form_Status: "open",
             Section_Form_Nisit_Number: 0,
             Section_Form_Date: new Date().toISOString(),
         });
@@ -83,7 +83,6 @@ sectionFormController.post(
             Section_Form_Name: t.String(),
             Section_Form_Detail: t.String(),
             Section_Form_Max_Number: t.Number(),
-            Section_Form_Status: t.String(),
         }),
         detail: {
             summary: "Create Section Form",
