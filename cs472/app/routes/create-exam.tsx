@@ -2,6 +2,7 @@ import {
   redirect,
   useFetcher,
   useLoaderData,
+  type ActionFunctionArgs,
   type LoaderFunction,
 } from "react-router";
 import { authCookie } from "~/utils/session.server";
@@ -18,16 +19,28 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const teachRepo = new TeachRepository();
   const teachs = await teachRepo.getTeachsByUserId(user.uuid);
-  console.log("Teachs: ", teachs);
+  // console.log("Teachs: ", teachs);
 
   const courseIds = teachs.map((teach) => teach.course_id);
-  console.log("Course IDs:", courseIds);
+  // console.log("Course IDs:", courseIds);
 
   const courseRepo = new CourseRepository();
-  const courses: Course[] = await courseRepo.getCoursesByIds(courseIds);
-  console.log("Courses: ", courses);
+  const courses: Course[] = await courseRepo.getCoursesListByIds(courseIds);
+  // console.log("Courses: ", courses);
   return { user, courses };
 };
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const course_id = formData.get("course_id") as string;
+  const date = formData.get("exam_date") as string;
+  const room = formData.get("room") as string;
+
+  console.log("Form Data: ", {course_id, date, room});
+
+  let errors: Record<string, any> = {};
+  
+}
 
 type LoaderData = {
   user: AuthCookie;
@@ -36,7 +49,6 @@ type LoaderData = {
 
 export default function CreateExam() {
   const { user, courses } = useLoaderData<LoaderData>();
-  // console.log("Courses in page: ",courses);
   const fetcher = useFetcher();
 
   return (

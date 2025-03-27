@@ -31,10 +31,44 @@ courseController.get(
   }
 );
 
+courseController.get(
+  "/get/:course_id",
+  async ({ params }) => {
+    const courseRepository = new CourseRepository();
+    const course: Course | null = await courseRepository.getCourseByID(
+      params.course_id
+    );
+    return course;
+  },
+  {
+    detail: {
+      summary: "Get Course by course id",
+      description: "Get course from database by course id",
+    },
+  }
+);
+
+courseController.get(
+  "/get/courseName/:course_name",
+  async ({ params }) => {
+    const courseRepository = new CourseRepository();
+    const course: Course | null = await courseRepository.getCourseByName(
+      params.course_name
+    );
+    return course;
+  },
+  {
+    detail: {
+      summary: "Get Course by course name",
+      description: "Get course from database by course name",
+    },
+  }
+);
+
 //get course ที่ต้องการพร้อมกันหลายตัว input = course_id1,course_id2,... ไม่ต้อง space
 courseController.get(
   "/getList/:course_id",
-  async ({params}) => {
+  async ({ params }) => {
     const courseRepository = new CourseRepository();
 
     const courseIds = params.course_id.split(",");
@@ -44,23 +78,27 @@ courseController.get(
   {
     detail: {
       summary: "Get Course list by course_id",
-      description: "Get list of Course from database by using course_id"
-    }
+      description: "Get list of Course from database by using course_id",
+    },
   }
-)
+);
 
 //Create a course
 courseController.post(
   "/create",
   async ({ body }) => {
     const courseRepository = new CourseRepository();
-    const course: Course = {
-      course_id: body.course_id,
-      course_name: body.course_name,
-      course_detail: body.course_detail,
-    };
-    const newCourse: Course = await courseRepository.createCourse(course);
-    return newCourse;
+    try {
+      const course: Course = {
+        course_id: body.course_id,
+        course_name: body.course_name,
+        course_detail: body.course_detail,
+      };
+      const newCourse: Course = await courseRepository.createCourse(course);
+      return newCourse;
+    } catch (error: any) {
+      return { error: error.message };
+    }
   },
   {
     body: t.Object({
