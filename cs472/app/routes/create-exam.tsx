@@ -6,9 +6,9 @@ import {
   type LoaderFunction,
 } from "react-router";
 import { authCookie } from "~/utils/session.server";
-import MenuBar from "./components/MenuBar";
 import TeachRepository from "./repositories/TeachRepository.server";
 import CourseRepository from "./repositories/CourseRepository.server";
+import TMenuBar from "./components/TMenuBar";
 
 export const loader: LoaderFunction = async ({ request }) => {
   // ตรวจสอบ session ของผู้ใช้
@@ -53,12 +53,13 @@ export default function CreateExam() {
 
   return (
     <div className="flex">
-      <MenuBar user={user} />
-      <div className="bg-slate-300 h-screen w-screen flex flex-col justify-center items-center">
-        <h1 className="text-2xl font-semibold mb-4">Create Exam</h1>
+      <TMenuBar user={user} />
+      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col justify-center items-center">
+        <div className="bg-white p-6 shadow-md rounded-2xl">
+        <h1 className="text-2xl font-semibold mb-4 text-center">Create Exam</h1>
         <fetcher.Form method="post" className="flex flex-col gap-5">
-          <div className="flex flex-row gap-5">
-            <div className="flex flex-col gap-5">
+          <div className="flex flex-row gap-6">
+            <div className="flex flex-col gap-10">
               <label>Course:</label>
               <label>Exam Date:</label>
               <label>Room:</label>
@@ -66,7 +67,7 @@ export default function CreateExam() {
 
             <div className="flex flex-col gap-5">
               {/* dropdown */}
-              <select name="course_id" className="bg-white">
+              <select name="course_id" className="bg-amber-100 rounded-2xl p-2">
                 <option value="">-- Select Course --</option>
                 {courses.map((course) => (
                   <option key={course.course_id} value={course.course_id}>
@@ -79,19 +80,21 @@ export default function CreateExam() {
               <input
                 type="datetime-local"
                 name="exam_date"
-                className="bg-white"
+                className="bg-amber-100 rounded-2xl p-4"
                 required
               />
 
               {/* room input */}
-              <input type="text" name="room" className="bg-white" required />
+              <input type="text" name="room" className="bg-amber-100 rounded-2xl p-2" required />
             </div>
           </div>
 
-          <button type="submit" className="bg-amber-200 p-2 rounded-xl">
+          <button type="submit" className="bg-[#7793AE] hover:bg-[#43586c] p-2 font-semibold text-white py-2 rounded-lg shadow-md">
             Create Exam
           </button>
         </fetcher.Form>
+
+        </div>
       </div>
     </div>
   );
