@@ -5,19 +5,34 @@ class CourseRepository {
   // ดึงข้อมูล Course ตาม ID
   public async getCourseByID(course_id: string): Promise<Course | null> {
     return await db.course.findUnique({
-      where: { course_id }
+      where: { course_id },
     });
   }
 
-  public async getCourseByName(course_name: string): Promise<Course|null> {
+  public async getCourseByName(course_name: string): Promise<Course | null> {
     return await db.course.findUnique({
-      where: { course_name: course_name }
+      where: { course_name: course_name },
     });
   }
 
   public async getCourseListById(course_id: string[]): Promise<Course[]> {
     return await db.course.findMany({
-      where: {course_id: {in: course_id}}
+      where: { course_id: { in: course_id } },
+    });
+  }
+
+  public async getCourseWithExams(user_id: string): Promise<Course[]> {
+    return await db.course.findMany({
+      where: {
+        enrollment: {
+          some: {
+            user_uuid: user_id,
+          },
+        },
+      },
+      include: {
+        exam: true,
+      },
     });
   }
 
@@ -30,7 +45,7 @@ class CourseRepository {
   public async createCourse(course: Course): Promise<Course> {
     // console.log("Course Data to Create:", course);
     return await db.course.create({
-      data: course
+      data: course,
     });
   }
 }
