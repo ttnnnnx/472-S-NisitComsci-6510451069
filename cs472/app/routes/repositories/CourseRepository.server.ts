@@ -16,10 +16,10 @@ export default class CourseRepository {
     return data;
   }
 
-  public async getCourseWithExams(user_uuid: string): Promise<Course> {
+  public async getCourseWithExams(user_uuid: string): Promise<Course[]> {
     const BACKEND_URL = process.env.BACKEND_URL as string;
     const response = await fetch(`${BACKEND_URL}/course/getCourseWithExams/${user_uuid}`);
-    const data: Course = await response.json();
+    const data: Course[] = await response.json();
     return data;
   }
 
