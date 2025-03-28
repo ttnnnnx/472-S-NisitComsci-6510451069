@@ -1,45 +1,53 @@
 import { format } from "date-fns";
 
-export default function ExamScheduleCard({
-  // date,
-  // start_time,
-  // end_time,
-  // course_id,
-  // course_name,
-  // room,
-}) {
-  // const examDate = new Date(start_time);
-  // const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-  // const day = daysOfWeek[examDate.getUTCDay()];
-  // const foramattedDate = format(examDate, "dd MMM");
+interface DataProps {
+  data: {
+    start_time: Date;
+    end_time: Date;
+    course_id: string;
+    course_name: string;
+    room: string;
+  };
+}
 
-  // const dayColors = {
-  //   SUN: "#FF0000", // แดง
-  //   MON: "#FFD700", // เหลือง
-  //   TUE: "#FF8C00", // ส้ม
-  //   WED: "#008000", // เขียว
-  //   THU: "#FF4500", // ส้ม
-  //   FRI: "#0000FF", // ฟ้า
-  //   SAT: "#800080", // ม่วง
-  // };
+export default function ExamScheduleCard({ data }: DataProps) {
+  const examStart = new Date(data.start_time);
+  const examEnd = new Date(data.end_time);
+  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const day = daysOfWeek[examStart.getDay()];
+  const foramattedDate = format(examStart, "dd MMM");
+
+  const start_time = format(examStart, "HH:mm" );
+  const end_time = format(examEnd, "HH:mm" );
+
+  const dayColors = {
+    SUN: "#FF0000", // แดง
+    MON: "#ffe86a", // เหลือง
+    TUE: "#eaa7db", // ชมพู
+    WED: "#55ea94", // เขียว
+    THU: "#f8c471", // ส้ม
+    FRI: "#85c1e9", // ฟ้า
+    SAT: "#c39bd3", // ม่วง
+  } as const;
 
   return (
     <div className="flex items-center bg-white shadow-md rounded-lg p-4 space-x-4">
       {/* Left Section (Day & Time) */}
-      <div className="w-32 bg-[#F9E26F] text-black p-4 rounded-lg flex flex-col h-full">
-        <div className="font-bold">MON 24 Mar</div>
-        <div className="text-lg font-semibold">8:00 - 12:00</div>
+      <div className="w-32 text-black p-4 rounded-lg flex flex-col h-full"
+      style={{ backgroundColor: dayColors[day as keyof typeof dayColors]}}>
+        <div className="font-bold">{day} {foramattedDate}</div>
+        <div className="text-lg font-semibold">{start_time} - {end_time}</div>
       </div>
 
       {/* Right Section (Details) */}
       <div className="flex-grow space-y-2">
-        <div className="text-gray-700 font-semibold">01418497-65 </div>
+        <div className="text-gray-700 font-semibold"> {data.course_id} </div>
 
         <div className="text-[#0f1d2a] font-bold">
-          Mobile Application Design and Development
+          {data.course_name}
         </div>
 
-        <div className="text-gray-600">ห้อง: SC45-710</div>
+        <div className="text-gray-600">ห้อง: {data.room}</div>
       </div>
     </div>
   );

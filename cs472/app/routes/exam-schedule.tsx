@@ -12,8 +12,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const courseRepo = new CourseRepository();
   const coursesWithExams = await courseRepo.getCourseWithExams(user.uuid);
 
-  //   console.log("Courses with Exams: ", coursesWithExams);
-
   const exams = coursesWithExams.flatMap((course) =>
     course.exam.map((exam) => ({
       exam_id: exam.exam_id,
@@ -25,13 +23,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }))
   );
 
-  console.log("Exams: ", exams);
-
   return { user, exams };
 }
 
 export default function ExamSchedule() {
-  const { user } = useLoaderData<typeof loader>();
+  const { user, exams } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex">
@@ -41,9 +37,15 @@ export default function ExamSchedule() {
           Exam Schedule
         </h1>
 
-        <main className="p-4">
-          <ExamScheduleCard />
-        </main>
+        <div className="space-y-4">
+          {exams.length > 0 ? (
+            exams.map((exam) => (
+              <ExamScheduleCard key={exam.exam_id} data={exam} />
+            ))
+          ) : (
+            <p className="text-black">No exams scheduled.</p>
+          )}
+        </div>
       </div>
     </div>
   );
