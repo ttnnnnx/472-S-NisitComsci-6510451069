@@ -41,11 +41,13 @@ class SectionFormRepository {
     // เข้าร่วมฟอร์ม
     public async joinSectionForm(
         formId: number,
-        nisitName: string
+        userFullName: string,
+        userId: string
     ): Promise<{ success: boolean; message: string }> {
         return await db.$transaction(async (tx) => {
             const form = await tx.openSectionForm.findUnique({
                 where: { Section_Form_ID: formId },
+                include: { Section_Form_Nisits: true },
             });
             if (!form) {
                 throw new Error("Form not found");
@@ -56,10 +58,19 @@ class SectionFormRepository {
             if (form.Section_Form_Nisit_Number >= form.Section_Form_Max_Number) {
                 throw new Error("Form is full");
             }
+            // ตรวจสอบว่าชื่อนิสิตที่ join เข้ามามีอยู่แล้วหรือไม่
+            const alreadyJoined = form.Section_Form_Nisits.find(
+                (nisit) => nisit.nisitName === userFullName
+            );
+            if (alreadyJoined) {
+                throw new Error("User has already joined");
+            }
+            // บันทึกข้อมูลการ join โดยเก็บชื่อเต็มของนิสิตและ userId
             await tx.sectionFormNisit.create({
                 data: {
-                    nisitName: nisitName,
+                    nisitName: userFullName,
                     sectionFormId: formId,
+                    userId: userId,
                 },
             });
             await tx.openSectionForm.update({

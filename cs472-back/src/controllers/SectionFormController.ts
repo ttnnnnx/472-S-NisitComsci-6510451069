@@ -1,6 +1,8 @@
 // controllers/SectionFormController.ts
 import { Elysia, t } from "elysia";
 import SectionFormRepository from "../repositories/SectionFormRepository";
+import AuthRepository from "../repositories/AuthRepository";
+import UserRepository from "../repositories/UserRepository";
 
 const sectionFormController = new Elysia({
     prefix: "/section-form",
@@ -94,58 +96,63 @@ sectionFormController.post(
 // POST /section-form/join -> เข้าร่วมฟอร์ม
 sectionFormController.post(
     "/join",
-    async ({ body }: { body: any }) => {
-        const { formId, Section_Form_Nisit_Name } = body;
+    async ({ body }) => {
+        const userRepu = new UserRepository();
 
-        if (!formId || !Section_Form_Nisit_Name) {
-            return new Response(JSON.stringify({ error: "Missing required fields" }), {
-                status: 400,
-                headers: { "Content-Type": "application/json" }
-            });
+        // ดึง formId และ userId จาก body
+        const { formId, userId } = body;
+
+        // ดึงข้อมูลผู้ใช้งานจาก userId
+        const user = await userRepu.getUserByID(userId);
+        if (!user) {
+            return new Response(
+                JSON.stringify({ error: "User not found" }),
+                { status: 404, headers: { "Content-Type": "application/json" } }
+            );
         }
-
+        // ประกอบชื่อเต็มจาก name และ surname
+        const userFullName = `${user.name} ${user.surname}`;
         const sectionFormRepo = new SectionFormRepository();
 
         // ตรวจสอบว่าฟอร์มมีอยู่หรือไม่
         const form = await sectionFormRepo.getSectionFormById(Number(formId));
-
         if (!form) {
-            return new Response(JSON.stringify({ error: "Form not found" }), {
-                status: 404,
-                headers: { "Content-Type": "application/json" }
-            });
+            return new Response(
+                JSON.stringify({ error: "Form not found" }),
+                { status: 404, headers: { "Content-Type": "application/json" } }
+            );
         }
 
         // ตรวจสอบว่าฟอร์มยังเปิดรับสมัครอยู่หรือไม่
         if (form.Section_Form_Status !== "open") {
-            return new Response(JSON.stringify({ error: "Form is closed" }), {
-                status: 400,
-                headers: { "Content-Type": "application/json" }
-            });
+            return new Response(
+                JSON.stringify({ error: "Form is closed" }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
         }
 
         // ตรวจสอบว่าฟอร์มยังมีที่ว่างหรือไม่
         if (form.Section_Form_Nisit_Number >= form.Section_Form_Max_Number) {
-            return new Response(JSON.stringify({ error: "Form is full" }), {
-                status: 400,
-                headers: { "Content-Type": "application/json" }
-            });
+            return new Response(
+                JSON.stringify({ error: "Form is full" }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
         }
 
-        // เพิ่มนิสิตเข้าร่วมฟอร์ม
-        const result = await sectionFormRepo.joinSectionForm(formId, Section_Form_Nisit_Name);
+        // เรียกใช้ repository joinSectionForm พร้อมส่ง formId, userFullName และ userId
+        const result = await sectionFormRepo.joinSectionForm(formId, userFullName, userId);
 
         return result;
     },
     {
         tags: ["SectionForm"],
         body: t.Object({
-            formId: t.Number(),
-            Section_Form_Nisit_Name: t.String(),
+            formId: t.Number(), // body มี formId
+            userId: t.String(), // และ userId
         }),
         detail: {
             summary: "Join Section Form",
-            description: "เข้าร่วมฟอร์ม",
+            description: "เข้าร่วมฟอร์ม โดยดึงข้อมูลผู้ใช้งานจาก userId ใน body แล้วประกอบชื่อเต็ม",
         },
     }
 );
