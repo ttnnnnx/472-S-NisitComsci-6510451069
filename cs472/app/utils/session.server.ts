@@ -8,6 +8,6 @@ const authCookieOptions : CookieOptions = {
   secure: true,
   secrets: [secret],
   httpOnly: false,
-  maxAge: 60 * 30 * 1 * 1, // seconds * minutes * hours * days
+  maxAge: 60 * 60 * 1 * 1, // seconds * minutes * hours * days
 }
 export const authCookie = createCookie("auth", authCookieOptions);

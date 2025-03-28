@@ -46,6 +46,15 @@ export async function action({ request }: ActionFunctionArgs) {
       };
       
       console.log("Auth Cookie: ",authCookieUser);
+
+      if(authCookieUser.role=="teacher"){
+        return redirect("/add-course", {
+          headers: {
+            "Set-Cookie": await authCookie.serialize(authCookieUser),
+          },
+        }); 
+      }
+
       return redirect("/", {
         headers: {
           "Set-Cookie": await authCookie.serialize(authCookieUser),

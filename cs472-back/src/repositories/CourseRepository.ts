@@ -15,7 +15,7 @@ class CourseRepository {
     });
   }
 
-  public async getCourseListById(course_id: string[]): Promise<Course[]|null> {
+  public async getCourseListById(course_id: string[]): Promise<Course[]> {
     return await db.course.findMany({
       where: {course_id: {in: course_id}}
     });

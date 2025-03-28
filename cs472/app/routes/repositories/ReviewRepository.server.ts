@@ -27,8 +27,8 @@ export default class ReviewRepository {
     public async addReview(
         course_id: string,
         user_uuid: string,
-        review_text: string,
         rating: number,
+        review_text: string,
     ): Promise<Review> {
         const BACKEND_URL = process.env.BACKEND_URL as string;
         const response = await fetch(`${BACKEND_URL}/review/add`, {
@@ -36,9 +36,10 @@ export default class ReviewRepository {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({course_id, user_uuid, review_text, rating}),
+        body: JSON.stringify({course_id, user_uuid, rating, review_text}),
         });
         const data: Review = await response.json();
+        console.log("[addReview] got called with:", { course_id, user_uuid, rating, review_text });
         return data;
     }
 

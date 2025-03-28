@@ -93,6 +93,7 @@ courseController.post(
         course_id: body.course_id,
         course_name: body.course_name,
         course_detail: body.course_detail,
+        year: body.year
       };
       const newCourse: Course = await courseRepository.createCourse(course);
       return newCourse;
@@ -105,6 +106,7 @@ courseController.post(
       course_id: t.String(),
       course_name: t.String(),
       course_detail: t.String(),
+      year: t.Number()
     }),
     detail: {
       summary: "Create a Course",
