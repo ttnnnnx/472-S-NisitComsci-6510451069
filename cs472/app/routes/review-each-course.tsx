@@ -13,19 +13,18 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
   const courses: Course[] = await courseRepository.getAllCourse();
   const reviewRepository = new ReviewRepository();
   const url = new URL(request.url);
-  const course_id = url.searchParams.get("course_id") ?? ""; 
+  const course_id = url.searchParams.get("course_id") ?? "";
   const reviews = await reviewRepository.getReviewsByCourse(course_id);
-  const course = courses.filter(course => course.course_id === course_id)
-  console.log("✅ Loaded course_id:", course_id);
-  console.log("✅ Loaded course:", course);
-  console.log("✅ Loaded Reviews:", reviews);
+  const course = courses.filter(course => course.course_id === course_id);
+  // console.log("✅ Loaded course_id:", course_id);
+  // console.log("✅ Loaded course:", course);
+  // console.log("✅ Loaded Reviews:", reviews);
   return { user, reviews, course};
 };
 
 const CourseReviews: React.FC = () => {
   // Use `useLoaderData` to get the loaded data from the loader
   const { user, reviews, course } = useLoaderData<{ user: User, reviews: Review[], course: Course[] }>();
-
   let total = 0;
   reviews.forEach((review) => {
     total += review.rating;  // Assuming review.rating is the score you want to average
@@ -55,7 +54,7 @@ const CourseReviews: React.FC = () => {
           <button className="bg-gray-400 text-black px-4 py-2 mr-2">
             คะแนนรวมวิชานี้ : {averageScore}/10
           </button>
-          <Link to={`/create-review?course_id=01418111`}>
+          <Link to={`/create-review?course_id=${course[0].course_id}`}>
             <button className="bg-green-500 text-black px-4 py-2 rounded-lg shadow-md hover:bg-[#43586c] transition">
               สร้างรีวิว
             </button>
@@ -66,8 +65,8 @@ const CourseReviews: React.FC = () => {
         {reviews.length === 0 ? (
           <div>No reviews available.</div>
         ) : (
-          reviews.map((review, index) => (
-              <div key={index} className="bg-gray-500 p-4 mb-4">
+          reviews.map((review, reviews) => (
+              <div key={reviews} className="bg-gray-500 p-4 mb-4">
                 <div className="flex items-center mb-2">
                   <div className="bg-gray-300 p-2 flex-1">{user.name}</div>
                   <div className="bg-gray-300 p-2 ml-2">{review.rating}/10</div>
@@ -76,7 +75,10 @@ const CourseReviews: React.FC = () => {
                   <p>{review.review_text}</p>
                 </div>
 
-                <button className="bg-red-500 text-white px-4 py-2">Delete</button>
+                {/*<button className="bg-red-500 text-white px-4 py-2">Delete</button>*/}
+                <button 
+                className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-[#43586c] transition">Delete
+                </button>
               </div>
           ))
         )}
