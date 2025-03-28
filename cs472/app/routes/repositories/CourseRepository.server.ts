@@ -33,7 +33,8 @@ export default class CourseRepository {
   public async createCourse(
     course_id: string,
     course_name: string,
-    course_detail: string
+    course_detail: string,
+    year: number
   ): Promise<Course> {
     const BACKEND_URL = process.env.BACKEND_URL as string;
     const response = await fetch(`${BACKEND_URL}/course/create`, {
@@ -41,7 +42,7 @@ export default class CourseRepository {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ course_id, course_name, course_detail }),
+      body: JSON.stringify({ course_id, course_name, course_detail, year }),
     });
     const data: Course = await response.json();
 

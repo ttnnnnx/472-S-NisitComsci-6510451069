@@ -18,15 +18,18 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!user) return redirect("/login");
   if (user.role !== "teacher") return redirect("/");
 
+  console.log("Add course page: ", user);
+
   const teachRepo = new TeachRepository();
   const teachs = await teachRepo.getTeachsByUserId(user.uuid);
+  console.log("Teachs: ", teachs);
 
   const courseIds = teachs.map((teach) => teach.course_id);
 
   const courseRepo = new CourseRepository();
   const courses: Course[] = await courseRepo.getCoursesListByIds(courseIds);
+  console.log("Course: ", courses);
 
-  console.log("Add course page: ", user);
   return { user, courses };
 };
 
@@ -35,9 +38,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const course_id = formData.get("course_id") as string;
   const course_name = formData.get("course_name") as string;
+  const year = Number(formData.get("year") as String);
   const detail = formData.get("detail") as string;
 
-  // console.log("FormData:", { course_id, course_name, detail });
+  // console.log("FormData:", { course_id, course_name, detail, year });
 
   let errors: Record<string, any> = {};
 
@@ -61,9 +65,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const newCourse = await courseRepo.createCourse(
     course_id,
     course_name,
-    detail
+    detail,
+    year as number
   );
-  // console.log("New Course: ", newCourse);
+  console.log("New Course: ", newCourse);
 
   const session = request.headers.get("Cookie");
   const user: AuthCookie = await authCookie.parse(session);
@@ -73,7 +78,7 @@ export async function action({ request }: ActionFunctionArgs) {
     user.uuid,
     newCourse.course_id
   );
-  // console.log("New Teach Record: ", newTeachRecord);
+  console.log("New Teach Record: ", newTeachRecord);
 
   return { success: "Create course successful!" };
 }
@@ -86,6 +91,7 @@ type LoaderData = {
 export default function AddCourse() {
   const fetcher = useFetcher();
   const { user, courses } = useLoaderData<LoaderData>();
+
   const errors = fetcher.data?.errors || {};
   const successMessage = fetcher.data?.success || "";
 
@@ -134,6 +140,18 @@ export default function AddCourse() {
                   {errors.course_name}
                 </h1>
               )}
+
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Year</label>
+              <input
+                  name="year"
+                  type="number"
+                  min="1"
+                  max="4"
+                  required
+                  className="w-full p-2 border rounded bg-blue-50"
+                />
             </div>
 
             <div>
@@ -158,6 +176,7 @@ export default function AddCourse() {
           </fetcher.Form>
         </div>
 
+        {/* course ที่สอน */}
         <div className="bg-white w-full shadow-md rounded-2xl p-6 mx-auto overflow-y-auto space-y-4">
           {courses.length > 0 ? (
             courses.map((course) => (

@@ -14,6 +14,7 @@ model SectionFormNisit {
   Section_Form_Nisit_ID Int             @id @default(autoincrement())
   nisitName             String
   sectionFormId         Int
+  userId                String          @db.Uuid
   form                  OpenSectionForm @relation(fields: [sectionFormId], references: [Section_Form_ID])
 }
 
