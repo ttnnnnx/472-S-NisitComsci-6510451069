@@ -18,19 +18,15 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!user) return redirect("/login");
   if (user.role !== "teacher") return redirect("/");
 
-  console.log("Add course page: ", user);
-
   const teachRepo = new TeachRepository();
   const teachs = await teachRepo.getTeachsByUserId(user.uuid);
-  console.log("Teachs: ", teachs);
 
   const courseIds = teachs.map((teach) => teach.course_id);
 
   const courseRepo = new CourseRepository();
   const courses: Course[] = await courseRepo.getCoursesListByIds(courseIds);
-  console.log("Course: ", courses);
 
-  return { user, courses };
+  return { user, courses: courses || [] };
 };
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -40,8 +36,6 @@ export async function action({ request }: ActionFunctionArgs) {
   const course_name = formData.get("course_name") as string;
   const year = Number(formData.get("year") as String);
   const detail = formData.get("detail") as string;
-
-  // console.log("FormData:", { course_id, course_name, detail, year });
 
   let errors: Record<string, any> = {};
 
@@ -57,8 +51,6 @@ export async function action({ request }: ActionFunctionArgs) {
       "The Course name you entered is already in use. Please try a different one.";
 
   if (Object.keys(errors).length > 0) {
-    //log check errror
-    console.log("Errors: ", errors);
     return { errors }; // Return all errors if any exist
   }
 
@@ -140,18 +132,17 @@ export default function AddCourse() {
                   {errors.course_name}
                 </h1>
               )}
-
             </div>
             <div>
               <label className="block text-sm font-medium">Year</label>
               <input
-                  name="year"
-                  type="number"
-                  min="1"
-                  max="4"
-                  required
-                  className="w-full p-2 border rounded bg-blue-50"
-                />
+                name="year"
+                type="number"
+                min="1"
+                max="4"
+                required
+                className="w-full p-2 border rounded bg-blue-50"
+              />
             </div>
 
             <div>
@@ -178,7 +169,7 @@ export default function AddCourse() {
 
         {/* course ที่สอน */}
         <div className="bg-white w-full shadow-md rounded-2xl p-6 mx-auto overflow-y-auto space-y-4">
-          {courses.length > 0 ? (
+          {courses && courses.length > 0 ? (
             courses.map((course) => (
               <TeacherCourseCard key={course.course_id} course={course} />
             ))
@@ -186,7 +177,6 @@ export default function AddCourse() {
             <p className="text-gray-500 text-center">No courses available</p>
           )}
         </div>
-
       </div>
     </div>
   );
