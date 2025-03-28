@@ -98,6 +98,24 @@ courseController.get(
   }
 );
 
+courseController.get(
+  "getTeacherCourses/:user_uuid",
+  async ({ params }) => {
+    const courseRepository = new CourseRepository();
+    const teacherCourses = await courseRepository.getTeacherCourses(
+      params.user_uuid
+    );
+    return teacherCourses;
+  },
+  {
+    detail: {
+      summary: "Get courses taught by a teacher",
+      description:
+        "Retrieve courses that a teacher is responsible for using user_uuid",
+    },
+  }
+);
+
 //Create a course
 courseController.post(
   "/create",

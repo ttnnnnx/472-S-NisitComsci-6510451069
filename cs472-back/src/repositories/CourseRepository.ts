@@ -36,6 +36,21 @@ class CourseRepository {
     });
   }
 
+  public async getTeacherCourses(user_uuid: string): Promise<Course[]> {
+    const teacher = await db.user.findUnique({
+      where: { uuid: user_uuid },
+      include: {
+        teach: {
+          include: {
+            course: true,
+          },
+        },
+      },
+    });
+
+    return teacher?.teach.map((t) => t.course) || [];
+  }
+
   // ดึงข้อมูล Course ทั้งหมด
   public async getAllCourse(): Promise<Course[]> {
     return await db.course.findMany();
