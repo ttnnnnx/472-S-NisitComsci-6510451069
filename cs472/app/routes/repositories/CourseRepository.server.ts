@@ -7,11 +7,26 @@ export default class CourseRepository {
     return data;
   }
 
-  public async getCoursesByIds(courseIds: string[]): Promise<Course[]> {
+  // fetch course ทั้งหมดตาม course_id ที่ใส่ไป
+  public async getCoursesListByIds(courseIds: string[]): Promise<Course[]> {
     const BACKEND_URL = process.env.BACKEND_URL as string;
     const queryParam = courseIds.join(","); // แปลง Array เป็น String
     const response = await fetch(`${BACKEND_URL}/course/getList/${queryParam}`);
     const data: Course[] = await response.json();
+    return data;
+  }
+
+  public async getCourseById(course_id: string): Promise<Course> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const response = await fetch(`${BACKEND_URL}/course/get/${course_id}`);
+    const data: Course = await response.json();
+    return data;
+  }
+
+  public async getCourseByName(course_name: string): Promise<Course> {
+    const BACKEND_URL = process.env.BACKEND_URL as string;
+    const response = await fetch(`${BACKEND_URL}/course/get/courseName/${course_name}`);
+    const data: Course = await response.json();
     return data;
   }
 
@@ -21,7 +36,7 @@ export default class CourseRepository {
     course_detail: string
   ): Promise<Course> {
     const BACKEND_URL = process.env.BACKEND_URL as string;
-    const response = await fetch(`${BACKEND_URL}/api/course/create`, {
+    const response = await fetch(`${BACKEND_URL}/course/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

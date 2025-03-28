@@ -17,8 +17,7 @@
     "resend": "^4.1.2"
   },
   "devDependencies": {
-    "bun-types": "latest",
-    "prisma": "^6.5.0"
+    "bun-types": "latest"
   },
   "module": "src/index.js"
 }

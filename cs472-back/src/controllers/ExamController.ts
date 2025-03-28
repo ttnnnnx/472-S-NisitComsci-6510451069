@@ -79,7 +79,8 @@ ExamController.post(
   {
     body: t.Object({
       course_id: t.String(),
-      date: t.Date(),
+      start_time: t.Date(),
+      end_time: t.Date(),
       room: t.String(),
     }),
     detail: {
@@ -100,6 +101,30 @@ ExamController.delete(
     detail: {
       summary: "Delete Exam",
       description: "Delete Exam by id",
+    },
+  }
+);
+
+ExamController.post(
+  "/examConflict",
+  async ({ body }) => {
+    const examRepo = new ExamRepository();
+    try {
+      const conflict = examRepo.checkExamConflict(body);
+      return conflict;
+    } catch (error: any) {
+      return { error: error.message };
+    }
+  },
+  {
+    body: t.Object({
+      room: t.String(),
+      start_time: t.Date(),
+      end_time: t.Date(),
+    }),
+    detail: {
+      summary: "Time Conflict",
+      description: "Check if time overlap in this room",
     },
   }
 );
