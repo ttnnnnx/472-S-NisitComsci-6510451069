@@ -160,7 +160,8 @@ export default function Register() {
           <h1 className="text-red-500 text-[12px]">{errors.confirmPassword}</h1>
         )}
         </div>
-
+        
+      
         <button
           className="bg-[#7793AE] text-white p-2 rounded-2xl w-40 hover:bg-[#43586c] transition"
           type="submit"

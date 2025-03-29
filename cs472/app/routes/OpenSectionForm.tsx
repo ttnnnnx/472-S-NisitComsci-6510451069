@@ -185,15 +185,26 @@ export default function OpenSectionForm() {
         <div className="flex">
             <MenuBar user={user} />
             <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
-                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
-                    Open Section Form
-                </h1>
+                <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
+                    <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6 text-center">
+                        Open Section Form
+                    </h1>
+                </div>
                 {joinError && (
                     <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
                         {joinError}
                     </div>
                 )}
-                <div className="bg-white p-4 rounded-lg shadow-lg h-[600px] overflow-y-auto border border-gray-300 mb-6">
+                <div className="bg-white p-6 rounded-2xl shadow-lg h-[600px] overflow-y-auto mb-6">
+
+                <div className="flex justify-end pb-4">
+                <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="gap-6 px-4 py-2 pb-2 bg-[#7793AE] text-white font-semibold rounded-lg shadow-md hover:bg-[#43586c] transition"
+                    >
+                        Create Section
+                    </button>
+                </div>
                     <ul className="space-y-4">
                         {forms.map((form) => {
                             // ตรวจสอบว่า form นี้ถูก join แล้วหรือยัง
@@ -216,7 +227,7 @@ export default function OpenSectionForm() {
                                         disabled={isJoined}
                                         className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md transition ${isJoined
                                                 ? "bg-gray-500 cursor-not-allowed"
-                                                : "bg-blue-500 hover:bg-blue-600 text-white"
+                                                : "bg-[#7793AE] hover:bg-[#43586c] text-white transition"
                                             }`}
                                     >
                                         {isJoined ? "Joined" : "Join Form"}
@@ -226,15 +237,9 @@ export default function OpenSectionForm() {
                         })}
                     </ul>
                 </div>
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="fixed bottom-10 right-10 bg-blue-500 text-white p-4 rounded-full text-2xl"
-                >
-                    +
-                </button>
                 {isModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg w-full max-w-md max-h-[90vh] overflow-auto">
+                        <div className="bg-white p-6 rounded-2xl w-full max-w-md max-h-[90vh] overflow-auto">
                             <h2 className="text-xl font-bold mb-4">
                                 Create New Section Form
                             </h2>
@@ -249,7 +254,7 @@ export default function OpenSectionForm() {
                                         name="Section_Form_Name"
                                         value={formValues.Section_Form_Name}
                                         onChange={handleChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md"
+                                        className="mt-1 block w-full rounded-2xl bg-amber-100"
                                         required
                                     />
                                 </div>
@@ -261,7 +266,7 @@ export default function OpenSectionForm() {
                                         name="Section_Form_Detail"
                                         value={formValues.Section_Form_Detail}
                                         onChange={handleChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md"
+                                        className="mt-1 block w-full bg-amber-100 rounded-2xl"
                                         required
                                     />
                                 </div>
@@ -271,10 +276,11 @@ export default function OpenSectionForm() {
                                     </label>
                                     <input
                                         type="number"
+                                        min={1}
                                         name="Section_Form_Max_Number"
                                         value={formValues.Section_Form_Max_Number}
                                         onChange={handleChange}
-                                        className="mt-1 block w-full border-gray-300 rounded-md"
+                                        className="mt-1 p-2 block w-full bg-amber-100 rounded-2xl"
                                         required
                                     />
                                 </div>
@@ -282,13 +288,13 @@ export default function OpenSectionForm() {
                                     <button
                                         type="button"
                                         onClick={() => setIsModalOpen(false)}
-                                        className="px-4 py-2 bg-gray-300 rounded"
+                                        className="mt-4 px-4 py-2 bg-red-700  text-white font-semibold rounded-lg shadow-md hover:bg-red-500 transition"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="mt-4 px-4 py-2 bg-[#7793AE] text-white font-semibold rounded-lg shadow-md hover:bg-[#43586c] transition"
+                                        className="mt-4 px-4 py-2 bg-[#61815D]  text-white font-semibold rounded-lg shadow-md hover:bg-[#7B9F77] transition"
                                     >
                                         Save
                                     </button>
@@ -299,7 +305,7 @@ export default function OpenSectionForm() {
                 )}
                 {confirmJoin.isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <div className="bg-white p-6 rounded-lg w-full max-w-sm">
+                        <div className="bg-white p-6 rounded-2xl w-full max-w-sm">
                             <h3 className="text-lg font-semibold mb-4">
                                 ยืนยันเข้าร่วมฟอร์ม
                             </h3>
@@ -307,13 +313,13 @@ export default function OpenSectionForm() {
                             <div className="flex justify-end space-x-4">
                                 <button
                                     onClick={cancelJoinAction}
-                                    className="px-4 py-2 bg-gray-300 rounded"
+                                    className="px-4 py-2 bg-red-700 hover:bg-red-500 rounded-lg transition text-white"
                                 >
                                     ยกเลิก
                                 </button>
                                 <button
                                     onClick={confirmJoinAction}
-                                    className="px-4 py-2 bg-green-500 text-white rounded"
+                                    className="px-4 py-2 bg-[#61815D] hover:bg-[#7B9F77] text-white transition rounded-lg"
                                 >
                                     ยืนยัน
                                 </button>

@@ -78,9 +78,11 @@ export default function MyCourseList() {
 
       <MenuBar user={user} />
       <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative ">
-        <h1 className="text-[#0f1d2a] text-2xl font-bold mb-6">
-          {user.name} Course List
-        </h1>
+        <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
+          <h1 className="text-[#0f1d2a] text-2xl font-bold mb-6">
+            {user.name} Course List
+          </h1>
+        </div>
 
         <div className="flex gap-4 mb-4">
           {[1, 2, 3, 4].map((year) => (

@@ -23,7 +23,7 @@ export default function Index() {
     // <div className="flex">
     //   <MenuBar user={user}/>
 
-      <div className="bg-slate-300 w-screen h-screen flex flex-col justify-center items-center p-6">
+      <div className="bg-[#C0E0FF] w-screen h-screen flex flex-col justify-center items-center p-6">
         <h1 className="text-black font-bold text-2xl">
          Welcome {user.name} {user.surname}! to Nisit Com Sci
        </h1>
