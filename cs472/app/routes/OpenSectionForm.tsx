@@ -12,6 +12,7 @@ import {
 } from "react-router";
 import MenuBar from "./components/MenuBar";
 import { authCookie } from "~/utils/session.server";
+import Header from "./components/Header";
 
 export interface Form {
     Section_Form_ID: number;
@@ -185,11 +186,9 @@ export default function OpenSectionForm() {
         <div className="flex">
             <MenuBar user={user} />
             <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
-                <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
-                    <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6 text-center">
-                        Open Section Form
-                    </h1>
-                </div>
+
+                <Header data="Open Section Form"/>
+
                 {joinError && (
                     <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
                         {joinError}

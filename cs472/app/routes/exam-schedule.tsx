@@ -3,6 +3,7 @@ import MenuBar from "./components/MenuBar";
 import { authCookie } from "~/utils/session.server";
 import ExamScheduleCard from "./components/ExamScheduleCard";
 import CourseRepository from "./repositories/CourseRepository.server";
+import Header from "./components/Header";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = request.headers.get("Cookie");
@@ -30,21 +31,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function ExamSchedule() {
-
   const { user, exams } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex">
       <MenuBar user={user} />
       <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
-        <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
-        <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
-          Exam Schedule
-        </h1>
-        </div>
+        
+        <Header data="Exam Schedule" />
 
         <div
-          className="w-full mx-auto overflow-y-auto p-4"
+          className="bg-white rounded-2xl shadow-lg w-full mx-auto overflow-y-auto p-4"
           style={{ maxHeight: "min(85vh, 850px)" }}
         >
           <div className="space-y-4">

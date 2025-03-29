@@ -4,6 +4,7 @@ import { Link, redirect, useLoaderData, type LoaderFunction, type MetaFunction }
 import CourseRepository from "./repositories/CourseRepository.server";
 import MenuBar from "./components/MenuBar";
 import { authCookie } from "~/utils/session.server";
+import Header from "./components/Header";
 
 export const meta: MetaFunction = () => {
     return [
@@ -25,21 +26,15 @@ export const loader: LoaderFunction = async ({request}) => {
 export default function ChooseCourseToReview() {
     const { user } = useLoaderData<{user: User}>();
     const { courses } = useLoaderData<{ courses: Course[] }>();
-    // const {user} = useLoaderData<LoaderData>();
 
     return (
         <div className="flex">
             <MenuBar user={user}/>
         <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-hidden">
-            
-            <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
-                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
-                    Choose Course To Review
-                </h1>
-            </div>
+
+            <Header data="Choose Course To Review"/>
 
             {/* กล่อง Scrollable สำหรับรายชื่อคอร์ส */}
-            {/* <div className="bg-white p-4 rounded-lg shadow-lg max-h-screen overflow-y-auto border border-gray-300"> */}
             <div className="bg-white p-6 rounded-2xl shadow-lg w-full mx-auto overflow-y-auto"
                          style={{ maxHeight: "min(85vh, 850px)" }}>
                 <ul className="space-y-4">

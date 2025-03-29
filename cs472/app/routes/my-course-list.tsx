@@ -77,9 +77,10 @@ export default function MyCourseList() {
     <div className="flex">
 
       <MenuBar user={user} />
+      
       <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative ">
         <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
-          <h1 className="text-[#0f1d2a] text-2xl font-bold mb-6">
+          <h1 className="text-[#0f1d2a] text-2xl font-bold">
             {user.name} Course List
           </h1>
         </div>
