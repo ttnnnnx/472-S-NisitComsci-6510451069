@@ -21,6 +21,11 @@ export interface Form {
     Section_Form_Nisit_Number: number;
     Section_Form_Date: string;
     Section_Form_Status: "open" | "close";
+    // เพิ่ม relation ของนิสิตที่เข้าร่วมฟอร์ม
+    Section_Form_Nisits: {
+        userId: string;
+        nisitName: string;
+    }[];
 }
 
 interface LoaderData {
@@ -76,11 +81,11 @@ export const action: ActionFunction = async ({ request }) => {
         });
         return { _action, newForm };
     } else if (_action === "joinForm") {
-        console.log("_action work")
+        console.log("_action work");
         const formId = Number(formData.get("formId"));
-        const userId = formData.get("userId") as string; //error undefined
-        console.log(formId)
-        console.log(userId)
+        const userId = formData.get("userId") as string;
+        console.log(formId);
+        console.log(userId);
         try {
             await sectionFormRepository.joinSectionForm(formId, userId);
             return { _action, success: true, formId };
@@ -101,8 +106,12 @@ export default function OpenSectionForm() {
         Section_Form_Detail: "",
         Section_Form_Max_Number: 0,
     });
+    // state สำหรับ join forms ใน session นี้
     const [joinedForms, setJoinedForms] = useState<number[]>([]);
-    const [confirmJoin, setConfirmJoin] = useState<{ isOpen: boolean; formId: number | null }>({
+    const [confirmJoin, setConfirmJoin] = useState<{
+        isOpen: boolean;
+        formId: number | null;
+    }>({
         isOpen: false,
         formId: null,
     });
@@ -158,7 +167,7 @@ export default function OpenSectionForm() {
     // เมื่อกดยืนยันการ joinใน modal
     const confirmJoinAction = () => {
         if (confirmJoin.formId) {
-            console.log("confirmJoinAction work")
+            console.log("confirmJoinAction work");
             const data = new FormData();
             data.append("_action", "joinForm");
             data.append("formId", String(confirmJoin.formId));
@@ -176,7 +185,9 @@ export default function OpenSectionForm() {
         <div className="flex">
             <MenuBar user={user} />
             <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
-                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">Open Section Form</h1>
+                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
+                    Open Section Form
+                </h1>
                 {joinError && (
                     <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">
                         {joinError}
@@ -184,22 +195,35 @@ export default function OpenSectionForm() {
                 )}
                 <div className="bg-white p-4 rounded-lg shadow-lg h-[600px] overflow-y-auto border border-gray-300 mb-6">
                     <ul className="space-y-4">
-                        {forms.map((form) => (
-                            <li key={form.Section_Form_ID} className="bg-gray-100 p-4 rounded shadow">
-                                <h2 className="text-xl font-semibold">{form.Section_Form_Name}</h2>
-                                <p className="mt-2">{form.Section_Form_Detail}</p>
-                                <button
-                                    onClick={() => handleJoinClick(form.Section_Form_ID)}
-                                    disabled={joinedForms.includes(form.Section_Form_ID)}
-                                    className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md transition ${joinedForms.includes(form.Section_Form_ID)
-                                            ? "bg-gray-500 cursor-not-allowed"
-                                            : "bg-blue-500 hover:bg-blue-600 text-white"
-                                        }`}
+                        {forms.map((form) => {
+                            // ตรวจสอบว่า form นี้ถูก join แล้วหรือยัง
+                            const isJoined =
+                                joinedForms.includes(form.Section_Form_ID) ||
+                                form.Section_Form_Nisits.some(
+                                    (nisit) => nisit.userId === user.uuid
+                                );
+                            return (
+                                <li
+                                    key={form.Section_Form_ID}
+                                    className="bg-gray-100 p-4 rounded shadow"
                                 >
-                                    {joinedForms.includes(form.Section_Form_ID) ? "Joined" : "Join Form"}
-                                </button>
-                            </li>
-                        ))}
+                                    <h2 className="text-xl font-semibold">
+                                        {form.Section_Form_Name}
+                                    </h2>
+                                    <p className="mt-2">{form.Section_Form_Detail}</p>
+                                    <button
+                                        onClick={() => handleJoinClick(form.Section_Form_ID)}
+                                        disabled={isJoined}
+                                        className={`mt-4 px-4 py-2 font-semibold rounded-lg shadow-md transition ${isJoined
+                                                ? "bg-gray-500 cursor-not-allowed"
+                                                : "bg-blue-500 hover:bg-blue-600 text-white"
+                                            }`}
+                                    >
+                                        {isJoined ? "Joined" : "Join Form"}
+                                    </button>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
                 <button
@@ -211,11 +235,15 @@ export default function OpenSectionForm() {
                 {isModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                         <div className="bg-white p-6 rounded-lg w-full max-w-md max-h-[90vh] overflow-auto">
-                            <h2 className="text-xl font-bold mb-4">Create New Section Form</h2>
+                            <h2 className="text-xl font-bold mb-4">
+                                Create New Section Form
+                            </h2>
                             <fetcher.Form method="post" className="space-y-4">
                                 <input type="hidden" name="_action" value="saveForm" />
                                 <div>
-                                    <label className="block text-sm font-medium">Section Form Name</label>
+                                    <label className="block text-sm font-medium">
+                                        Section Form Name
+                                    </label>
                                     <input
                                         type="text"
                                         name="Section_Form_Name"
@@ -226,7 +254,9 @@ export default function OpenSectionForm() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium">Section Form Detail</label>
+                                    <label className="block text-sm font-medium">
+                                        Section Form Detail
+                                    </label>
                                     <textarea
                                         name="Section_Form_Detail"
                                         value={formValues.Section_Form_Detail}
@@ -236,7 +266,9 @@ export default function OpenSectionForm() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium">Section Form Max Number</label>
+                                    <label className="block text-sm font-medium">
+                                        Section Form Max Number
+                                    </label>
                                     <input
                                         type="number"
                                         name="Section_Form_Max_Number"
@@ -268,13 +300,21 @@ export default function OpenSectionForm() {
                 {confirmJoin.isOpen && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                         <div className="bg-white p-6 rounded-lg w-full max-w-sm">
-                            <h3 className="text-lg font-semibold mb-4">ยืนยันเข้าร่วมฟอร์ม</h3>
+                            <h3 className="text-lg font-semibold mb-4">
+                                ยืนยันเข้าร่วมฟอร์ม
+                            </h3>
                             <p className="mb-6">คุณแน่ใจที่จะเข้าร่วมฟอร์มนี้หรือไม่?</p>
                             <div className="flex justify-end space-x-4">
-                                <button onClick={cancelJoinAction} className="px-4 py-2 bg-gray-300 rounded">
+                                <button
+                                    onClick={cancelJoinAction}
+                                    className="px-4 py-2 bg-gray-300 rounded"
+                                >
                                     ยกเลิก
                                 </button>
-                                <button onClick={confirmJoinAction} className="px-4 py-2 bg-green-500 text-white rounded">
+                                <button
+                                    onClick={confirmJoinAction}
+                                    className="px-4 py-2 bg-green-500 text-white rounded"
+                                >
                                     ยืนยัน
                                 </button>
                             </div>
