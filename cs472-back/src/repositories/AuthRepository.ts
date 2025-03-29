@@ -35,29 +35,6 @@ class AuthRepository {
     return await db.passwordResetToken.findMany();
   }
 
-  // public async getUserFromToken(token: string): Promise<AuthCookie | null> {
-  //   try {
-  //     // Decode token จาก base64 กลับมาเป็น JSON string
-  //     const decodedString = Buffer.from(token, 'base64').toString('utf8');
-  //     // Parse JSON string เพื่อให้ได้ object ที่ตรงกับ AuthCookie
-  //     const user = JSON.parse(decodedString) as AuthCookie;
-  //     return user;
-  //   } catch (error) {
-  //     // หากเกิดข้อผิดพลาดในการ decode หรือ parse ให้คืนค่า null
-  //     return null;
-  //   }
-  // }
-
-  // public async getUserIdFromToken(token: string): Promise<string | null> {
-  //   const resetToken = await db.passwordResetToken.findUnique({
-  //     where: { token },
-  //     select: { user_uuid: true },
-  //   });
-
-  //   return resetToken ? resetToken.user_uuid : null;
-  // }
-
-
   public async deleteResetToken(
     token: string
   ): Promise<PasswordResetToken | null> {
