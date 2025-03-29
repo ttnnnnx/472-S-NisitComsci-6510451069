@@ -241,7 +241,7 @@ export default function OpenSectionForm() {
                     </ul>
                 </div>
                 {isModalOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="fixed inset-0 flex items-center justify-center bg-[#C0E0FF] bg-opacity-50">
                         <div className="bg-white p-6 rounded-2xl w-full max-w-md max-h-[90vh] overflow-auto">
                             <h2 className="text-xl font-bold mb-4">
                                 Create New Section Form
@@ -307,7 +307,7 @@ export default function OpenSectionForm() {
                     </div>
                 )}
                 {confirmJoin.isOpen && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="fixed inset-0 flex items-center justify-center bg-[#C0E0FF] bg-opacity-50">
                         <div className="bg-white p-6 rounded-2xl w-full max-w-sm">
                             <h3 className="text-lg font-semibold mb-4">
                                 ยืนยันเข้าร่วมฟอร์ม
