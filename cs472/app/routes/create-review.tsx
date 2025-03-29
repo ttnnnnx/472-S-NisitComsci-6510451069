@@ -47,11 +47,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
   try {
     const reviewRepository = new ReviewRepository();
-    await reviewRepository.addReview(course_id, user.uuid, rating, review_text);
+    const review = await reviewRepository.addReview(course_id, user.uuid, rating, review_text);
+    // console.log("✅ Loaded User:", user.uuid);
+    // console.log("✅ Loaded Create Reviews:", review);
 
     return redirect(`/review-each-course?course_id=${course_id}`);
   } catch (error) {
-    console.error("Error submitting review:", error);
+    // console.error("Error submitting review:", error);
     return { error: "เกิดข้อผิดพลาดในการโพสต์รีวิว" };
   }
 }

@@ -15,9 +15,23 @@ class ReviewRepository {
   }
 
   // ✅ ดึงรีวิวทั้งหมดของรายวิชาหนึ่ง ๆ
+  // public async getReviewsByCourse(course_id: string): Promise<Review[]> {
+  //   return await db.review.findMany({
+  //     where: { course_id },
+  //   });
+  // }
+
   public async getReviewsByCourse(course_id: string): Promise<Review[]> {
     return await db.review.findMany({
-      where: { course_id },
+      where: {
+        course_id: course_id,
+      },
+      include: {
+        user: {select: {name: true}},
+      },
+      orderBy: {
+        review_date: "desc"
+      }
     });
   }
 

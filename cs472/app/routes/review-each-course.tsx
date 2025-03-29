@@ -1,6 +1,7 @@
 import MenuBar from "./components/MenuBar";
 import ReviewRepository from "./repositories/ReviewRepository.server";
 import CourseRepository from "./repositories/CourseRepository.server";
+import React, { useEffect, useState } from "react";
 import { type LoaderFunctionArgs, Link, redirect, useLoaderData, type LoaderFunction } from "react-router";
 import { authCookie } from "~/utils/session.server";
 
@@ -19,6 +20,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
   // console.log("✅ Loaded course_id:", course_id);
   // console.log("✅ Loaded course:", course);
   // console.log("✅ Loaded Reviews:", reviews);
+
   return { user, reviews, course};
 };
 
@@ -32,6 +34,8 @@ const CourseReviews: React.FC = () => {
   });
 
   const averageScore = reviews.length > 0 ? total / reviews.length : 0;
+
+  // const time = new Date(reviews.review_date) รอตัดสินใจว่าจะใช้รูปแบบเวลาแบบไหน
 
   return (
     <div className="flex">
@@ -69,7 +73,7 @@ const CourseReviews: React.FC = () => {
           reviews.map((review, reviews) => (
               <div key={reviews} className="bg-gray-500 p-4 mb-4">
                 <div className="flex items-center mb-2">
-                  <div className="bg-white p-2 flex-1 rounded-2xl">{user.name}</div>
+                  <div className="bg-white p-2 flex-1 rounded-2xl">{review.user.name ?? "Anonymous"} - {review.review_date}</div>
                   <div className="bg-[#61815D] p-2 ml-2 rounded-2xl text-white">{review.rating}/10</div>
                 </div>
                 <div className="bg-white p-4 mb-2 w-full text-left rounded-2xl">

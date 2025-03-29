@@ -44,7 +44,7 @@ reviewController.get("/course/:course_id",  async ({ params }) => {
 reviewController.post("/add", async ({ body }) => {
     // ตัวอย่าง console.log
     console.log("[POST /review/add] body:", body);
-    const { uuid, course_id, rating, review_text } = body;
+    const { course_id, uuid, rating, review_text } = body;
     if (rating < 0 || rating > 10) {
       throw new Error("Rating must be between 0 and 10");
     }

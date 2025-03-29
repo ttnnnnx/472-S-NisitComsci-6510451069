@@ -26,7 +26,7 @@ export default class ReviewRepository {
     // Method to add a new review
     public async addReview(
         course_id: string,
-        user_uuid: string,
+        uuid: string,
         rating: number,
         review_text: string,
     ): Promise<Review> {
@@ -36,10 +36,10 @@ export default class ReviewRepository {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({course_id, user_uuid, rating, review_text}),
+        body: JSON.stringify({course_id, uuid, rating, review_text}),
         });
         const data: Review = await response.json();
-        console.log("[addReview] got called with:", { course_id, user_uuid, rating, review_text });
+        console.log("[addReview] got called with:", { course_id, uuid, rating, review_text });
         return data;
     }
 
