@@ -89,7 +89,7 @@ export default function Register() {
   const errors = fetcher.data?.errors || {};
 
   return (
-    <div className="bg-[#C0E0FF] h-screen flex flex-col justify-center items-center">
+    <div className="bg-[#C0E0FF] h-screen flex flex-col justify-center items-center overflow-auto">
       <fetcher.Form
         method="post"
         action="/register"

@@ -97,7 +97,7 @@ export default function AddCourse() {
     <div className="flex">
       <TMenuBar user={user} />
 
-      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col items-center relative p-4 gap-4 overflow-hidden">
+      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col items-center relative p-4 gap-4 overflow-auto">
         <div className="bg-white rounded-2xl p-6 w-full">
           <h1 className="text-2xl font-semibold mb-4 text-center">
             Create Course

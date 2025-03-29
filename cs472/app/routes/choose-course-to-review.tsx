@@ -30,7 +30,7 @@ export default function ChooseCourseToReview() {
     return (
         <div className="flex">
             <MenuBar user={user}/>
-        <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-hidden">
+        <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-auto">
 
             <Header data="Choose Course To Review"/>
 

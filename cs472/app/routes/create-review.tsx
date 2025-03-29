@@ -76,7 +76,7 @@ export default function CreateReviewPage() {
     <div className="flex">
       <MenuBar user={user} />
 
-      <div className="review-container bg-[#C0E0FF] h-screen w-screen p-6 relative">
+      <div className="review-container bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-auto">
         <div className="bg-white p-2 mb-4 rounded-2xl">
           <h2 id="course-title" className="text-lg">
             {course.course_id} - {course.course_name}

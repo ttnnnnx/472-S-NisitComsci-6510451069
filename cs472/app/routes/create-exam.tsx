@@ -89,7 +89,7 @@ export default function CreateExam() {
   return (
     <div className="flex">
       <TMenuBar user={user} />
-      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col justify-center items-center">
+      <div className="bg-[#C0E0FF] h-screen w-screen flex flex-col justify-center items-center overflow-auto">
         <fetcher.Form
           method="post"
           className="flex flex-col gap-6 bg-white items-center rounded-lg p-6 shadow-2xl w-[600px] max-w-[90%]"

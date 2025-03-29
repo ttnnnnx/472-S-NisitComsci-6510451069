@@ -185,7 +185,7 @@ export default function OpenSectionForm() {
     return (
         <div className="flex">
             <MenuBar user={user} />
-            <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
+            <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-auto">
 
                 <Header data="Open Section Form"/>
 
@@ -194,7 +194,11 @@ export default function OpenSectionForm() {
                         {joinError}
                     </div>
                 )}
-                <div className="bg-white p-6 rounded-2xl shadow-lg h-[600px] overflow-y-auto mb-6">
+
+                <div 
+                    className="bg-white rounded-2xl shadow-lg w-full mx-auto overflow-y-auto p-4"
+                    style={{ maxHeight: "min(85vh, 850px)" }}
+                >
 
                 <div className="flex justify-end pb-4">
                 <button

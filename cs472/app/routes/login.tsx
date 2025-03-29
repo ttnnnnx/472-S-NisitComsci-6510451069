@@ -70,7 +70,7 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Login() {
   const fetcher = useFetcher<ActionMessage>();
   return (
-    <div className="bg-[#C0E0FF] h-screen flex flex-col justify-center items-center">
+    <div className="bg-[#C0E0FF] h-screen flex flex-col justify-center items-center overflow-auto">
       <fetcher.Form
         method="post"
         className="flex flex-col justify-center items-center w-fit h-fit space-y-4 bg-blue-50 p-10 rounded-2xl"

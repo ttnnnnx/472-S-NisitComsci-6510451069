@@ -9,7 +9,7 @@ interface MenuBarProps {
 
 export default function MenuBar({ user }: MenuBarProps) {
   return (
-    <div className="w-60 min-w-60 max-w-60 h-screen bg-[#0f1d2a] text-white flex flex-col justify-between p-4 shadow-lg">
+    <div className="w-60 min-w-60 max-w-60 h-screen bg-[#0f1d2a] text-white flex flex-col justify-between p-4 shadow-lg overflow-auto">
       {/* Username at the top */}
       <div className="text-xl font-bold text-center py-4 border-b border-gray-700">
         {user.name}
@@ -29,6 +29,8 @@ export default function MenuBar({ user }: MenuBarProps) {
         <Link to="/OpenSectionForm"
           className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Open Section Form</Link>
       </nav>
+
+      <br/>
 
       <LogoutButton />
 

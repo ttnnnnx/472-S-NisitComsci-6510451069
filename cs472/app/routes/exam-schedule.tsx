@@ -36,7 +36,7 @@ export default function ExamSchedule() {
   return (
     <div className="flex">
       <MenuBar user={user} />
-      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
+      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-auto">
         
         <Header data="Exam Schedule" />
 

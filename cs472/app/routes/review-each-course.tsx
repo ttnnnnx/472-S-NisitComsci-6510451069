@@ -40,7 +40,7 @@ const CourseReviews: React.FC = () => {
   return (
     <div className="flex">
       <MenuBar user={user} />
-      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative mx-auto overflow-y-auto border">
+      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative mx-auto overflow-auto border">
         {/* Course Header */}
         <div className="bg-white p-4 mb-4 rounded-2xl w-full">
           <h1 className="text-lg font-bold text-[#0f1d2a]">{course[0].course_id} {course[0].course_name}</h1>

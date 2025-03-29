@@ -9,7 +9,7 @@ interface TMenuBarProps {
 
 export default function TMenuBar({ user }: TMenuBarProps) {
   return (
-    <div className="w-60 min-w-60 max-w-60 h-screen bg-[#0f1d2a] text-white flex flex-col justify-between p-4 shadow-lg">
+    <div className="w-60 min-w-60 max-w-60 h-screen bg-[#0f1d2a] text-white flex flex-col justify-between p-4 shadow-lg overflow-auto">
       {/* Username at the top */}
       <div className="text-xl font-bold text-center py-4 border-b border-gray-700">
         {user.name}
@@ -24,11 +24,11 @@ export default function TMenuBar({ user }: TMenuBarProps) {
         <Link to="/create-exam" 
         className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Exam Schedule</Link>
       </nav>
-      
+
+      <br/>
+
       <LogoutButton/>
       
-      {/* Logout Button */}
-      {/* <button className="w-full px-4 py-2 bg-red-600 rounded hover:bg-red-500">Logout</button> */}
     </div>
   );
 }

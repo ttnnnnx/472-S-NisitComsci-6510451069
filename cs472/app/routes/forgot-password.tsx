@@ -16,7 +16,7 @@ export async function action({request}: ActionFunctionArgs) {
 export default function ForgotPassword(){
     const fetcher = useFetcher<ErrorMessage>();
     return (
-        <div className="bg-[#1E364C] h-screen flex flex-col justify-center items-center">
+        <div className="bg-[#1E364C] h-screen flex flex-col justify-center items-center overflow-auto">
           <fetcher.Form
             method="post"
             className="bg-blue-50 h-fit w-xl p-10 rounded-md flex flex-col gap-3 justify-center items-center shadow-lg"

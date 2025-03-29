@@ -20,10 +20,8 @@ export async function loader({request}: LoaderFunctionArgs) {
 export default function Index() {
   const {user} = useLoaderData<typeof loader>();
   return (
-    // <div className="flex">
-    //   <MenuBar user={user}/>
 
-      <div className="bg-[#C0E0FF] w-screen h-screen flex flex-col justify-center items-center p-6">
+      <div className="bg-[#C0E0FF] w-screen h-screen flex flex-col justify-center items-center p-6 overflow-auto">
         <h1 className="text-black font-bold text-2xl">
          Welcome {user.name} {user.surname}! to Nisit Com Sci
        </h1>
@@ -33,6 +31,6 @@ export default function Index() {
           </button>
        </Link>
       </div>
-    // </div>
+
   );
 }
