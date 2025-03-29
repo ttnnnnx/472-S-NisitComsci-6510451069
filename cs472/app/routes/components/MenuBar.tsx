@@ -14,21 +14,24 @@ export default function MenuBar({ user }: MenuBarProps) {
       <div className="text-xl font-bold text-center py-4 border-b border-gray-700">
         {user.name}
       </div>
-      
+
       {/* Navigation Buttons */}
       <nav className="flex flex-col space-y-4 flex-grow mt-4">
-        <Link 
-        to="/my-course-list" 
-        className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">My Course</Link>
-        <Link 
-        to="/choose-course-to-review" 
-        className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Review Course</Link>
-        <Link to="/exam-schedule" 
-        className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Exam Schedule</Link>
+        <Link
+          to="/my-course-list"
+          className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">My Course</Link>
+        <Link
+          to="/choose-course-to-review"
+          className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Review Course</Link>
+        <Link to="/exam-schedule"
+          className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Exam Schedule</Link>
+
+        <Link to="/OpenSectionForm"
+          className="px-4 py-2 bg-[#1a3043] rounded hover:bg-[#5685af]">Open Section Form</Link>
       </nav>
-      
-      <LogoutButton/>
-      
+
+      <LogoutButton />
+
       {/* Logout Button */}
       {/* <button className="w-full px-4 py-2 bg-red-600 rounded hover:bg-red-500">Logout</button> */}
     </div>

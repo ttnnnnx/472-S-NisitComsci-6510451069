@@ -2,31 +2,51 @@ import { redirect, useLoaderData, type LoaderFunctionArgs } from "react-router";
 import MenuBar from "./components/MenuBar";
 import { authCookie } from "~/utils/session.server";
 import ExamScheduleCard from "./components/ExamScheduleCard";
+import CourseRepository from "./repositories/CourseRepository.server";
 
-export async function loader({request}: LoaderFunctionArgs) {
-    const session = request.headers.get("Cookie");
-    const user : AuthCookie = await authCookie.parse(session);
-    if (!user) return redirect("/login");
-    return {user};
-  }
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = request.headers.get("Cookie");
+  const user: AuthCookie = await authCookie.parse(session);
+  if (!user) return redirect("/login");
+
+  const courseRepo = new CourseRepository();
+  const coursesWithExams = await courseRepo.getCourseWithExams(user.uuid);
+
+  const exams = coursesWithExams.flatMap((course) =>
+    course.exam.map((exam) => ({
+      exam_id: exam.exam_id,
+      course_id: course.course_id,
+      course_name: course.course_name,
+      room: exam.room,
+      start_time: exam.start_time,
+      end_time: exam.end_time,
+    }))
+  );
+
+  return { user, exams };
+}
 
 export default function ExamSchedule() {
-    const {user} = useLoaderData<typeof loader>();
-    return (
-        <div className="flex">
-            <MenuBar user={user}/>
-            <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
-                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
-                    Exam Schedule
-                </h1>
+  const { user, exams } = useLoaderData<typeof loader>();
 
-                <main className="p-4">
-                    <ExamScheduleCard/>
-                </main>
+  return (
+    <div className="flex">
+      <MenuBar user={user} />
+      <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
+        <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
+          Exam Schedule
+        </h1>
 
-            </div>
+        <div className="space-y-4">
+          {exams.length > 0 ? (
+            exams.map((exam) => (
+              <ExamScheduleCard key={exam.exam_id} data={exam} />
+            ))
+          ) : (
+            <p className="text-black">No exams scheduled.</p>
+          )}
         </div>
-    );
-
-
+      </div>
+    </div>
+  );
 }
