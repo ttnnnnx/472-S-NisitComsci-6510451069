@@ -18,10 +18,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
       course_id: course.course_id,
       course_name: course.course_name,
       room: exam.room,
-      start_time: exam.start_time,
-      end_time: exam.end_time,
+      start_time: new Date(exam.start_time),
+      end_time: new Date(exam.end_time),
     }))
   );
+
+  // เรียงลำดับตาม start_time
+  exams.sort((a, b) => a.start_time.getTime() - b.start_time.getTime());
 
   return { user, exams };
 }
@@ -37,14 +40,19 @@ export default function ExamSchedule() {
           Exam Schedule
         </h1>
 
-        <div className="space-y-4">
-          {exams.length > 0 ? (
-            exams.map((exam) => (
-              <ExamScheduleCard key={exam.exam_id} data={exam} />
-            ))
-          ) : (
-            <p className="text-black">No exams scheduled.</p>
-          )}
+        <div
+          className="w-full mx-auto overflow-y-auto p-4"
+          style={{ maxHeight: "min(85vh, 850px)" }}
+        >
+          <div className="space-y-4">
+            {exams.length > 0 ? (
+              exams.map((exam) => (
+                <ExamScheduleCard key={exam.exam_id} data={exam} />
+              ))
+            ) : (
+              <p className="text-black">No exams scheduled.</p>
+            )}
+          </div>
         </div>
       </div>
     </div>
