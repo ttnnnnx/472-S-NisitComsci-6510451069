@@ -89,11 +89,11 @@ export default function Register() {
   const errors = fetcher.data?.errors || {};
 
   return (
-    <div className="bg-[#1E364C] h-screen flex flex-col justify-center items-center">
+    <div className="bg-[#C0E0FF] h-screen flex flex-col justify-center items-center">
       <fetcher.Form
         method="post"
         action="/register"
-        className="bg-blue-50 h-fit w-fit p-5 px-10 rounded-md shadow-lg flex flex-col justify-center items-center gap-4"
+        className="bg-blue-50 h-fit w-fit p-5 px-10 rounded-2xl shadow-lg flex flex-col justify-center items-center gap-4"
       >
         <h1 className="text-[#1E364C] font-extrabold text-3xl">Register</h1>
 
@@ -162,7 +162,7 @@ export default function Register() {
         </div>
 
         <button
-          className="bg-[#7793AE] text-white p-2 rounded w-40 hover:bg-[#43586c]"
+          className="bg-[#7793AE] text-white p-2 rounded-2xl w-40 hover:bg-[#43586c] transition"
           type="submit"
         >
           create account

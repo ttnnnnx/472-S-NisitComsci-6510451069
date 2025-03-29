@@ -1,6 +1,6 @@
 export default function ExamScheduleCard() {
     return (
-      <div className="flex items-center bg-white shadow-md rounded-lg p-4 space-x-4">
+      <div className="flex items-center bg-white shadow-md rounded-2xl p-4 space-x-4 w-full">
         {/* Left Section (Day & Time) */}
         <div className="w-32 bg-[#F9E26F] text-black p-4 rounded-lg flex flex-col h-full">
           <div className="font-bold">MON 24 Mar</div>

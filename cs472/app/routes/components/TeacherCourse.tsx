@@ -3,6 +3,7 @@ interface TeacherCourseCardProps {
     course_id: string;
     course_name: string;
     course_detail: string;
+    year: number;
   };
 }
 
@@ -17,6 +18,11 @@ export default function TeacherCourseCard({ course }: TeacherCourseCardProps) {
       <div>
         <h3 className="text-gray-500 font-semibold">Course Name</h3>
         <p className="text-[#0f1d2a] font-bold text-lg">{course.course_name}</p>
+      </div>
+
+      <div>
+        <h3 className="text-gray-500 font-semibold">Year</h3>
+        <p className="text-[#0f1d2a] font-bold text-lg">{course.year}</p>
       </div>
 
       <div>

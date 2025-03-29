@@ -73,14 +73,16 @@ export default function MyCourseList() {
     <div className="flex">
       <MenuBar user={user}/>
     <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative ">
-      <h1 className="text-[#0f1d2a] text-2xl font-bold mb-6">{user.name} Course List</h1>
-      <div className="bg-white p-4 rounded-lg shadow-lg max-h-[800px] overflow-y-auto border border-gray-300">
+      <div className="bg-white p-4 mb-4 rounded-2xl w-full text-center">
+        <h1 className="text-[#0f1d2a] text-2xl font-bold mb-6">{user.name} Course List</h1>
+      </div>
+      <div className="bg-white p-4 rounded-2xl shadow-lg max-h-[800px] overflow-y-auto ">
       <fetcher.Form method="post" className="mt-4 space-y-4">
         <ul className="space-y-2">
           {allCourses.map((course) => {
             const isChecked = enrolledCourseIds.includes(course.course_id);
             return (
-              <li key={course.course_id} className="flex items-center gap-2">
+              <li key={course.course_id} className="flex items-center gap-2 bg-gray-100 p-3 rounded-2xl">
                 <input
                   type="checkbox"
                   name="courseIds"

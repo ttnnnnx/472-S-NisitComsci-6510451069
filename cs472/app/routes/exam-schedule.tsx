@@ -16,9 +16,11 @@ export default function ExamSchedule() {
         <div className="flex">
             <MenuBar user={user}/>
             <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative">
-                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
-                    Exam Schedule
-                </h1>
+                <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
+                    <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
+                        Exam Schedule
+                    </h1>
+                </div>
 
                 <main className="p-4">
                     <ExamScheduleCard/>

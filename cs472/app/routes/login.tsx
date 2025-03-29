@@ -70,10 +70,10 @@ export async function action({ request }: ActionFunctionArgs) {
 export default function Login() {
   const fetcher = useFetcher<ActionMessage>();
   return (
-    <div className="bg-[#1E364C] h-screen flex flex-col justify-center items-center">
+    <div className="bg-[#C0E0FF] h-screen flex flex-col justify-center items-center">
       <fetcher.Form
         method="post"
-        className="flex flex-col justify-center items-center w-fit h-fit space-y-4 bg-blue-50 p-10 rounded"
+        className="flex flex-col justify-center items-center w-fit h-fit space-y-4 bg-blue-50 p-10 rounded-2xl"
       >
         <h1 className="text-[#1E364C] font-extrabold text-3xl">Nisit-Comsci</h1>
         <input
@@ -94,7 +94,7 @@ export default function Login() {
         <button
           name="_action"
           value="login"
-          className="bg-[#7793AE] text-white p-2 rounded w-40 hover:bg-[#43586c]"
+          className="bg-[#7793AE] text-white p-2 rounded-2xl w-40 hover:bg-[#43586c] transition"
         >
           Login
         </button>

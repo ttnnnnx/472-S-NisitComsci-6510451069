@@ -32,13 +32,15 @@ export default function ChooseCourseToReview() {
             <MenuBar user={user}/>
         <div className="bg-[#C0E0FF] h-screen w-screen p-6 relative overflow-hidden">
             
-            <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
-                Choose Course To Review
-            </h1>
+            <div className="bg-white p-4 mb-4 rounded-2xl text-center w-full">
+                <h1 className="text-[#0f1d2a] font-bold text-2xl mb-6">
+                    Choose Course To Review
+                </h1>
+            </div>
 
             {/* กล่อง Scrollable สำหรับรายชื่อคอร์ส */}
             {/* <div className="bg-white p-4 rounded-lg shadow-lg max-h-screen overflow-y-auto border border-gray-300"> */}
-            <div className="bg-white p-4 rounded-lg shadow-lg w-full mx-auto overflow-y-auto border border-gray-300"
+            <div className="bg-white p-6 rounded-2xl shadow-lg w-full mx-auto overflow-y-auto"
                          style={{ maxHeight: "min(85vh, 850px)" }}>
                 <ul className="space-y-4">
                     {courses.map((course) => (

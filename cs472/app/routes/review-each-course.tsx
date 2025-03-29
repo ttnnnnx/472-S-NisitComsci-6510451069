@@ -49,10 +49,10 @@ const CourseReviews: React.FC = () => {
 
         {/* Buttons */}
         <div className="flex mb-4">
-          <button className="bg-[#7793AE] hover:bg-[#43586c] text-white px-4 py-2 mr-2 rounded-2xl transition">
+          <button className="bg-[#7793AE] text-white px-4 py-2 mr-2 rounded-2xl ">
             รีวิวทั้งหมด
           </button>
-          <button className="bg-[#7793AE] hover:bg-[#43586c] text-white px-4 py-2 mr-2 rounded-2xl transition">
+          <button className="bg-[#7793AE] text-white px-4 py-2 mr-2 rounded-2xl ">
             คะแนนรวมวิชานี้ : {averageScore}/10
           </button>
           <Link to={`/create-review?course_id=01418111`}>
@@ -67,12 +67,12 @@ const CourseReviews: React.FC = () => {
           <div className="text-[#0f1d2a]">No reviews available.</div>
         ) : (
           reviews.map((review, index) => (
-              <div key={index} className="bg-amber-100 p-4 mb-4 rounded-2xl">
+              <div key={index} className="bg-white p-4 mb-4 rounded-2xl">
                 <div className="flex items-center mb-2">
-                  <div className="bg-white p-2 flex-1 rounded-2xl">{user.name}</div>
+                  <div className="bg-gray-100 p-2 flex-1 rounded-2xl">{user.name}</div>
                   <div className="bg-[#61815D] p-2 ml-2 rounded-2xl text-white">{review.rating}/10</div>
                 </div>
-                <div className="bg-white p-4 mb-2 w-full text-left rounded-2xl">
+                <div className="bg-gray-100 p-4 mb-2 w-full text-left rounded-2xl">
                   <p>{review.review_text}</p>
                 </div>
 
