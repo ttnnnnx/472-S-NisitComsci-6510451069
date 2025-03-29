@@ -1,6 +1,7 @@
 import MenuBar from "./components/MenuBar";
 import ReviewRepository from "./repositories/ReviewRepository.server";
 import CourseRepository from "./repositories/CourseRepository.server";
+import React, { useEffect, useState } from "react";
 import { type LoaderFunctionArgs, Link, redirect, useLoaderData, type LoaderFunction } from "react-router";
 import { authCookie } from "~/utils/session.server";
 
@@ -13,25 +14,28 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
   const courses: Course[] = await courseRepository.getAllCourse();
   const reviewRepository = new ReviewRepository();
   const url = new URL(request.url);
-  const course_id = url.searchParams.get("course_id") ?? ""; 
+  const course_id = url.searchParams.get("course_id") ?? "";
   const reviews = await reviewRepository.getReviewsByCourse(course_id);
-  const course = courses.filter(course => course.course_id === course_id)
-  console.log("✅ Loaded course_id:", course_id);
-  console.log("✅ Loaded course:", course);
-  console.log("✅ Loaded Reviews:", reviews);
+  const course = courses.filter(course => course.course_id === course_id);
+  // console.log("✅ Loaded course_id:", course_id);
+  // console.log("✅ Loaded course:", course);
+  // console.log("✅ Loaded Reviews:", reviews);
+
   return { user, reviews, course};
 };
 
 const CourseReviews: React.FC = () => {
   // Use `useLoaderData` to get the loaded data from the loader
   const { user, reviews, course } = useLoaderData<{ user: User, reviews: Review[], course: Course[] }>();
-
+  
   let total = 0;
   reviews.forEach((review) => {
     total += review.rating;  // Assuming review.rating is the score you want to average
   });
 
   const averageScore = reviews.length > 0 ? total / reviews.length : 0;
+
+  // const time = new Date(reviews.review_date) รอตัดสินใจว่าจะใช้รูปแบบเวลาแบบไหน
 
   return (
     <div className="flex">
@@ -55,7 +59,7 @@ const CourseReviews: React.FC = () => {
           <button className="bg-[#7793AE] text-white px-4 py-2 mr-2 rounded-2xl ">
             คะแนนรวมวิชานี้ : {averageScore}/10
           </button>
-          <Link to={`/create-review?course_id=01418111`}>
+          <Link to={`/create-review?course_id=${course[0].course_id}`}>
             <button className="bg-[#61815D] text-white px-4 py-2 rounded-2xl shadow-md hover:bg-[#263824] transition">
               สร้างรีวิว
             </button>
@@ -66,10 +70,12 @@ const CourseReviews: React.FC = () => {
         {reviews.length === 0 ? (
           <div className="text-[#0f1d2a]">No reviews available.</div>
         ) : (
-          reviews.map((review, index) => (
-              <div key={index} className="bg-white p-4 mb-4 rounded-2xl">
+
+          reviews.map((review, reviews) => (
+              <div key={reviews} className="bg-white p-4 mb-4 rounded-2xl">
                 <div className="flex items-center mb-2">
-                  <div className="bg-gray-100 p-2 flex-1 rounded-2xl">{user.name}</div>
+                  <div className="bg-gray-100 p-2 flex-1 rounded-2xl">{review.user.name ?? "Anonymous"} - {review.review_date}</div>
+
                   <div className="bg-[#61815D] p-2 ml-2 rounded-2xl text-white">{review.rating}/10</div>
                 </div>
                 <div className="bg-gray-100 p-4 mb-2 w-full text-left rounded-2xl">
