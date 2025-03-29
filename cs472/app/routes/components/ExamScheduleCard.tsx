@@ -17,8 +17,8 @@ export default function ExamScheduleCard({ data }: DataProps) {
   const day = daysOfWeek[examStart.getDay()];
   const foramattedDate = format(examStart, "dd MMM");
 
-  const start_time = format(examStart, "HH:mm" );
-  const end_time = format(examEnd, "HH:mm" );
+  const start_time = format(new Date(data.start_time.getTime()-(3600000*7)), "HH:mm");
+  const end_time = format(new Date(data.end_time.getTime()-(3600000*7)), "HH:mm");
 
   const dayColors = {
     SUN: "#FF0000", // แดง
