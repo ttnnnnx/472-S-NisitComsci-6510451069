@@ -83,6 +83,39 @@ courseController.get(
   }
 );
 
+courseController.get(
+  "getCourseWithExams/:user_uuid",
+  async ({ params }) => {
+    const courseRepository = new CourseRepository();
+    const courses = await courseRepository.getCourseWithExams(params.user_uuid);
+    return courses;
+  },
+  {
+    detail: {
+      summary: "Get course with exam",
+      description: "Get course with exam using user_uuid",
+    },
+  }
+);
+
+courseController.get(
+  "getTeacherCourses/:user_uuid",
+  async ({ params }) => {
+    const courseRepository = new CourseRepository();
+    const teacherCourses = await courseRepository.getTeacherCourses(
+      params.user_uuid
+    );
+    return teacherCourses;
+  },
+  {
+    detail: {
+      summary: "Get courses taught by a teacher",
+      description:
+        "Retrieve courses that a teacher is responsible for using user_uuid",
+    },
+  }
+);
+
 //Create a course
 courseController.post(
   "/create",
@@ -93,7 +126,7 @@ courseController.post(
         course_id: body.course_id,
         course_name: body.course_name,
         course_detail: body.course_detail,
-        year: body.year
+        year: body.year,
       };
       const newCourse: Course = await courseRepository.createCourse(course);
       return newCourse;
@@ -106,7 +139,7 @@ courseController.post(
       course_id: t.String(),
       course_name: t.String(),
       course_detail: t.String(),
-      year: t.Number()
+      year: t.Number(),
     }),
     detail: {
       summary: "Create a Course",

@@ -18,15 +18,12 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!user) return redirect("/login");
   if (user.role !== "teacher") return redirect("/");
 
-  const teachRepo = new TeachRepository();
-  const teachs = await teachRepo.getTeachsByUserId(user.uuid);
-
-  const courseIds = teachs.map((teach) => teach.course_id);
-
   const courseRepo = new CourseRepository();
-  const courses: Course[] = await courseRepo.getCoursesListByIds(courseIds);
+  const teacherCourses = await courseRepo.getTeacherCourses(user.uuid);
 
-  return { user, courses: courses || [] };
+  if(!teacherCourses) return {user, courses: []};
+
+  return { user, courses: teacherCourses};
 };
 
 export async function action({ request }: ActionFunctionArgs) {

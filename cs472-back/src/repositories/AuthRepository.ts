@@ -3,6 +3,15 @@ import db from "../database";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { randomBytes } from "crypto";
 
+export interface AuthCookie {
+  uuid: string;
+  name: string;
+  surname: string;
+  email: string;
+  role: string;
+  year: number;
+}
+
 class AuthRepository {
   public async generateResetToken(userId: string) {
     const token = randomBytes(32).toString("hex");

@@ -41,41 +41,42 @@ class SectionFormRepository {
     // เข้าร่วมฟอร์ม
     public async joinSectionForm(
         formId: number,
-        nisitName: string
+        userFullName: string,
+        userId: string
     ): Promise<{ success: boolean; message: string }> {
-        // ใช้ Transaction เพื่อให้การทำงานเป็น Atomic
         return await db.$transaction(async (tx) => {
-            // 1. ดึงข้อมูลฟอร์ม
             const form = await tx.openSectionForm.findUnique({
                 where: { Section_Form_ID: formId },
+                include: { Section_Form_Nisits: true },
             });
-
             if (!form) {
                 throw new Error("Form not found");
             }
-
             if (form.Section_Form_Status !== "open") {
                 throw new Error("Form is closed");
             }
-
             if (form.Section_Form_Nisit_Number >= form.Section_Form_Max_Number) {
                 throw new Error("Form is full");
             }
-
-            // 2. เพิ่มข้อมูลนิสิตเข้าร่วมฟอร์ม
+            // ตรวจสอบว่าชื่อนิสิตที่ join เข้ามามีอยู่แล้วหรือไม่
+            const alreadyJoined = form.Section_Form_Nisits.find(
+                (nisit) => nisit.nisitName === userFullName
+            );
+            if (alreadyJoined) {
+                throw new Error("User has already joined");
+            }
+            // บันทึกข้อมูลการ join โดยเก็บชื่อเต็มของนิสิตและ userId
             await tx.sectionFormNisit.create({
                 data: {
-                    nisitName: nisitName,
+                    nisitName: userFullName,
                     sectionFormId: formId,
+                    userId: userId,
                 },
             });
-
-            // 3. อัพเดทจำนวนนิสิตที่เข้าร่วมฟอร์ม
             await tx.openSectionForm.update({
                 where: { Section_Form_ID: formId },
                 data: { Section_Form_Nisit_Number: { increment: 1 } },
             });
-
             return { success: true, message: "Joined form successfully" };
         });
     }
