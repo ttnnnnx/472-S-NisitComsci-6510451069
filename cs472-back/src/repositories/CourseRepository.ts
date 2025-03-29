@@ -22,7 +22,7 @@ class CourseRepository {
   }
 
   public async getCourseWithExams(user_id: string): Promise<Course[]> {
-    return await db.course.findMany({
+    const response = await db.course.findMany({
       where: {
         enrollment: {
           some: {
@@ -34,6 +34,7 @@ class CourseRepository {
         exam: true,
       },
     });
+    return response;
   }
 
   public async getTeacherCourses(user_uuid: string): Promise<Course[]> {
