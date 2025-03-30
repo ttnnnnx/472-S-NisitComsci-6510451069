@@ -23,6 +23,7 @@ ARG AUTH_SECRET="YOUR_SECRET_KEY"
 ENV BACKEND_URL=$BACKEND_URL
 ENV AUTH_SECRET=$AUTH_SECRET
 
+
 WORKDIR /app
 
 # Copy necessary files from the build stage
